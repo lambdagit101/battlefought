@@ -24,7 +24,7 @@ function SWEP:Initialize()
     self:SetHoldType("slam")
 end
 
-function SWEP:Equip()
+function SWEP:Deploy()
     self:SendWeaponAnim(ACT_SLAM_DETONATOR_DRAW)
 end
 
