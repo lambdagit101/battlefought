@@ -1,0 +1,19 @@
+"battlefought"
+{
+	"base"		"base"
+	"title"		"battle_fought_"
+	"category"	"pvp"
+	"menusystem"	"1"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"sv_randomboxes"
+			"text"		"Random boxes"
+			"help"		"Disable if all supply box spawns are guaranteed"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+	}
+}
