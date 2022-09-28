@@ -4,6 +4,7 @@ local hide = {
     ["CHudSquadStatus"] = true,
     ["CHudAmmo"] = true,
     ["CHudSecondaryAmmo"] = true,
+    ["CHudSuitPower"] = true,
 }
 
 surface.CreateFont("bfthud_general", {
@@ -54,10 +55,11 @@ end)
 
 local hudbgcolor = Color(0, 0, 0, 200)
 local hudhpcolor = Color(185, 185, 185)
-local hudhpredcolor = Color(205, 45, 45)
+local hudhpredcolor = Color(255, 50, 50)
 local hudarcolor = Color(115, 115, 255)
 local hudtxcolor = Color(195, 195, 195)
-local hudtxredcolor = Color(255, 45, 45)
+local hudtxredcolor = Color(255, 50, 50)
+local hudaxcolor = Color(255, 145, 0)
 
 local function DrawTextWithShadow(text, font, x, y, color, alignone, aligntwo)
     draw.SimpleText(text, font .. "_blur", x + 2, y + 2, hudbgcolor, alignone, aligntwo)
@@ -83,14 +85,34 @@ function DrawHealthDisplay()
     draw.RoundedBox(0, (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 40/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 4/1080), boxsizex * (0.735), ScreenScale(2), hudbgcolor)
     draw.RoundedBox(0, (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 40/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 4/1080), boxsizex * (0.735) * (LocalPlayer():Armor() / LocalPlayer():GetMaxArmor()), ScreenScale(2), hudarcolor)
 
+    if LocalPlayer():GetSuitPower() ~= 100 then
+        draw.RoundedBox(0, (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 40/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 24/1080), boxsizex * (0.735), ScreenScale(2), hudbgcolor)
+        draw.RoundedBox(0, (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 40/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 24/1080), boxsizex * (0.735) * (LocalPlayer():GetSuitPower() / 100), ScreenScale(2), hudaxcolor)
+    end
+
     DrawTextWithShadow(LocalPlayer():Nick(), "bfthud_general", (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 60/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 4/1080), hudtxcolor)
 end
+
+local hudamtxcolor = Color(195, 195, 195)
+local hudamrdcolor = Color(255, 50, 50)
 
 function DrawAmmo()
     if not IsValid(LocalPlayer():GetActiveWeapon()) then return end
 
-    DrawTextWithShadow(LocalPlayer():GetActiveWeapon():Clip1(), "bfthud_ammobig", ScrW() - (ScrW() * 65/1920) - GetConVar("bfthud_xoffset"):GetInt(), ScrH() - (ScrH() * 60/1080), hudtxcolor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
-    DrawTextWithShadow(LocalPlayer():GetAmmoCount(LocalPlayer():GetActiveWeapon():GetPrimaryAmmoType()), "bfthud_ammosmall", ScrW() - (ScrW() * 65/1920) - GetConVar("bfthud_xoffset"):GetInt(), ScrH() - (ScrH() * 60/1080), hudtxcolor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+    local ammo1 = LocalPlayer():GetAmmoCount(LocalPlayer():GetActiveWeapon():GetPrimaryAmmoType())
+    local maxclip1 = LocalPlayer():GetActiveWeapon():GetMaxClip1()
+    local clip1 = LocalPlayer():GetActiveWeapon():Clip1()
+
+    if clip1 == -1 and ammo1 == 0 then return end
+
+    if clip1 == -1 then
+        clip1 = ammo1
+    end
+
+    DrawTextWithShadow(clip1, "bfthud_ammobig", ScrW() - (ScrW() * 65/1920) - GetConVar("bfthud_xoffset"):GetInt(), ScrH() - (ScrH() * 60/1080) - GetConVar("bfthud_yoffset"):GetInt(), (clip1 < maxclip1 / 3 and hudamrdcolor or hudamtxcolor), TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+    if LocalPlayer():GetActiveWeapon():Clip1() ~= -1 then
+        DrawTextWithShadow(ammo1, "bfthud_ammosmall", ScrW() - (ScrW() * 65/1920) - GetConVar("bfthud_xoffset"):GetInt(), ScrH() - (ScrH() * 60/1080) - GetConVar("bfthud_yoffset"):GetInt(), (ammo1 == 0 and hudamrdcolor or hudamtxcolor), TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
+    end
 end
 
 local vignettegradient = Material("battlefought/vignette_white.png", "noclamp smooth")
