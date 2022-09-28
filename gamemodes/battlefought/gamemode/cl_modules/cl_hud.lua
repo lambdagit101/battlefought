@@ -11,16 +11,35 @@ surface.CreateFont("bfthud_general", {
     size = ScrW() * (16/1920),
     weight = 750,
 })
+surface.CreateFont("bfthud_general_blur", {
+    font = "Roboto",
+    size = ScrW() * (16/1920),
+    weight = 750,
+    blursize = 2,
+})
 
 surface.CreateFont("bfthud_ammobig", {
     font = "Roboto",
-    size = ScrW() * (72/1920),
+    size = ScrW() * (50/1920),
     weight = 1000,
 })
+surface.CreateFont("bfthud_ammobig_blur", {
+    font = "Roboto",
+    size = ScrW() * (50/1920),
+    weight = 1000,
+    blursize = 2,
+})
+
 surface.CreateFont("bfthud_ammosmall", {
     font = "Roboto",
-    size = ScrW() * (37/1920),
-    weight = 750,
+    size = ScrW() * (32/1920),
+    weight = 500,
+})
+surface.CreateFont("bfthud_ammosmall_blur", {
+    font = "Roboto",
+    size = ScrW() * (32/1920),
+    weight = 500,
+    blursize = 2,
 })
 
 CreateConVar("bfthud_xoffset", 0, FCVAR_ARCHIVE, "How far away from the vertical edges of the screen should the HUD be in pixels?", 0)
@@ -39,6 +58,11 @@ local hudhpredcolor = Color(205, 45, 45)
 local hudarcolor = Color(115, 115, 255)
 local hudtxcolor = Color(195, 195, 195)
 local hudtxredcolor = Color(255, 45, 45)
+
+local function DrawTextWithShadow(text, font, x, y, color, alignone, aligntwo)
+    draw.SimpleText(text, font .. "_blur", x + 2, y + 2, hudbgcolor, alignone, aligntwo)
+    draw.SimpleText(text, font, x, y, color, alignone, aligntwo)
+end
 
 local lowhpsine = math.sin(2 * math.pi * 1 * CurTime())
 
@@ -59,13 +83,14 @@ function DrawHealthDisplay()
     draw.RoundedBox(0, (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 40/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 4/1080), boxsizex * (0.735), ScreenScale(2), hudbgcolor)
     draw.RoundedBox(0, (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 40/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 4/1080), boxsizex * (0.735) * (LocalPlayer():Armor() / LocalPlayer():GetMaxArmor()), ScreenScale(2), hudarcolor)
 
-    draw.SimpleText(LocalPlayer():Nick(), "bfthud_general", (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 60/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 4/1080), hudtxcolor)
+    DrawTextWithShadow(LocalPlayer():Nick(), "bfthud_general", (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 60/1080) - GetConVar("bfthud_yoffset"):GetInt() + (ScrH() * 4/1080), hudtxcolor)
 end
 
 function DrawAmmo()
     if not IsValid(LocalPlayer():GetActiveWeapon()) then return end
 
-    draw.DrawText(LocalPlayer():GetActiveWeapon():Clip1(), "bfthud_ammobig", ScrW() - (ScrW() * 65/1920) - GetConVar("bfthud_xoffset"):GetInt(), ScrH() - (ScrH() * 60/1080), hudtxcolor)
+    DrawTextWithShadow(LocalPlayer():GetActiveWeapon():Clip1(), "bfthud_ammobig", ScrW() - (ScrW() * 65/1920) - GetConVar("bfthud_xoffset"):GetInt(), ScrH() - (ScrH() * 60/1080), hudtxcolor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+    DrawTextWithShadow(LocalPlayer():GetAmmoCount(LocalPlayer():GetActiveWeapon():GetPrimaryAmmoType()), "bfthud_ammosmall", ScrW() - (ScrW() * 65/1920) - GetConVar("bfthud_xoffset"):GetInt(), ScrH() - (ScrH() * 60/1080), hudtxcolor, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
 end
 
 local vignettegradient = Material("battlefought/vignette_white.png", "noclamp smooth")
