@@ -29,8 +29,16 @@ function SWEP:Equip()
 end
 
 function SWEP:PrimaryAttack()
-    if self:Ammo1() == 0 then return end
     self:SetNextPrimaryFire(CurTime() + 1)
+    if self:GetOwner():Armor() >= self:GetOwner():GetMaxArmor() then 
+        self:GetOwner():PrintMessage(HUD_PRINTCENTER, "Armor is fully charged!")
+        self:EmitSound("common/warning.wav")
+        return 
+    elseif self:Ammo1() == 0 then
+        self:GetOwner():PrintMessage(HUD_PRINTCENTER, "No armor charges left!")
+        self:EmitSound("common/warning.wav")
+        return 
+    end
 
     self:TakePrimaryAmmo(1)
     self:SendWeaponAnim(ACT_SLAM_DETONATOR_DETONATE)

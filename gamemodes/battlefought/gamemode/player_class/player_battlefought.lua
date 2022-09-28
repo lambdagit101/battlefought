@@ -4,8 +4,11 @@ local PLAYER = {}
 
 PLAYER.DisplayName = "battle_fought_player"
 PLAYER.WalkSpeed = 200
-PLAYER.RunSpeed  = 400
+PLAYER.SlowWalkSpeed = 150
+PLAYER.RunSpeed  = 345
 PLAYER.CrouchedWalkSpeed = 0.3
+PLAYER.StartArmor = 33
+PLAYER.MaxArmor = 99
  
 function PLAYER:Loadout()
     self.Player:RemoveAllAmmo()

@@ -118,6 +118,21 @@ function DrawAmmo()
     end
 end
 
+local oldar = 0
+local oldhp = 100
+local showarmor = false
+hook.Add("Think", "battle_fought_armorsound", function()
+    if LocalPlayer():Armor() ~= oldar and LocalPlayer():Armor() == 0 then
+        surface.PlaySound("common/warning.wav")
+        surface.PlaySound("physics/glass/glass_sheet_break" .. math.random(1, 3) .. ".wav")
+        showarmor = true
+    end
+    oldar = LocalPlayer():Armor()
+    oldhp = LocalPlayer():Health()
+end)
+
+local drawarmorfor = 0
+local vignettearmor = Color(100, 100, 255)
 local vignettegradient = Material("battlefought/vignette_white.png", "noclamp smooth")
 function DrawEffects()
     if LocalPlayer():Health() < LocalPlayer():GetMaxHealth() / 3 then
@@ -126,6 +141,22 @@ function DrawEffects()
         surface.SetMaterial(vignettegradient)
         surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
         draw.NoTexture()
+    end
+
+    if showarmor and drawarmorfor == 0 then
+        showarmor = false
+        drawarmorfor = UnPredictedCurTime() + 0.350
+        DrawMotionBlur(0.4, 0.8, 0.02)
+    end
+
+    if drawarmorfor ~= 0 then
+        local mp = math.TimeFraction(drawarmorfor - 0.350, drawarmorfor, UnPredictedCurTime())
+        surface.SetDrawColor(ColorAlpha(vignettearmor, 255 * (1 - mp)))
+        surface.SetMaterial(vignettegradient)
+        surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
+        if mp >= 1 then
+            drawarmorfor = 0
+        end
     end
 end
 
