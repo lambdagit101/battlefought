@@ -68,10 +68,6 @@ SWEP.Anim.Reload = ACT_VM_RELOAD
 SWEP.Anim.IdleEmpty = ACT_VM_IDLE_EMPTY
 SWEP.Anim.Idle = ACT_VM_IDLE
 
-SWEP.Anim.Sprint = ACT_VM_IDLE
-SWEP.Anim.ADS = ACT_VM_IDLE
-SWEP.Anim.Inspect = ACT_VM_IDLE
-
 SWEP.Anim.ShellReloadStart = ACT_SHOTGUN_RELOAD_START
 SWEP.Anim.ShellReloadInsert = ACT_VM_RELOAD
 SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
@@ -79,7 +75,6 @@ SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
-SWEP.Rload.Sound = Sound("Weapon_SMG1.Reload")
 
 function SWEP:SecondaryAttack()
 end
@@ -112,10 +107,6 @@ function SWEP:Initialize()
 end
   
 function SWEP:Reload()
-    if self:Clip1() == self:GetMaxClip1() then
-        self:SendWeaponAnim(self.Anim.Inspect)
-        self:QueueIdle()
-    end
     if self.Rload.Shells then
         if not self:GetReloading() and self:Clip1() ~= self:GetMaxClip1() then
             self:GetOwner():DoReloadEvent()
@@ -128,12 +119,12 @@ function SWEP:Reload()
         if self:Clip1() ~= self:GetMaxClip1() and self:Ammo1() ~= 0 and not self:GetReloading() then
             self:GetOwner():DoReloadEvent()
             self:SendWeaponAnim(self:Clip1() == 0 and self.Anim.ReloadEmpty or self.Anim.Reload)
+            self:QueueIdle()
             self:SetReloadTime(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
             self:SetReloading(true)
-            if self.Rload.Sound then
+            if self.Rload.Sound ~= nil then
                 self:EmitSound(self.Rload.Sound)
             end
-            self:QueueIdle()
         end
     end
 end
@@ -170,7 +161,6 @@ function SWEP:IronsightsThink()
     self:SetAimingDownSights(self:GetOwner():KeyDown(IN_ATTACK2) and not self:GetReloading() and not self:IsSprinting())
     self:SetHoldType((self:GetAimingDownSights() and self.AimHoldType or self.HoldType))
     if self:GetOwner():KeyPressed(IN_ATTACK2) and not self:GetReloading() and not self:IsSprinting() and self.ADS.Sound ~= nil then
-        self:SendWeaponAnim(self.Anim.ADS)
         self:EmitSound(self.ADS.Sound)
     end
 end
@@ -187,24 +177,10 @@ function SWEP:IdleThink()
 		self:SendWeaponAnim(self:Clip1() > 0 and self.Anim.Idle or self.Anim.IdleEmpty)
 	end
 end
-
-function SWEP:SprintThink()
-    self.AnimPlayed = self.AnimPlayed or false
-    if self:GetOwner():KeyDown(IN_RUN) and not self.AnimPlayed then
-        self.AnimPlayed = true
-        self:SendWeaponAnim(ACT_VM_IDLE)
-    end
-
-    if not self:GetOwner():KeyDown(IN_RUN) and self.AnimPlayed then
-        self.AnimPlayed = false 
-        self:QueueIdle()
-    end
-end
   
 function SWEP:Think()
     self:ReloadThink()
     self:IronsightsThink()
-    self:SprintThink()
 
     self.BobScale = (self:GetAimingDownSights() and 0.1 or 1)
     self.SwayScale = (self:GetAimingDownSights() and 0.1 or 1)
