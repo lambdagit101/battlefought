@@ -1,6 +1,6 @@
 net.Receive("Intermission",function()
-
+    print("Intermission")
 end)
 net.Receive("StartWave",function()
-
+    print("Wave")
 end)

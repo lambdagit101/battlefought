@@ -1,38 +1,42 @@
-local Intermission = true
-local Time = 0
-local IntermissionTime = 30
-local WaveTime = 240
+GM.Intermission = true
+GM.Time = 0
+GM.IntermissionTime = 30
+GM.WaveTime = 240
 
-Intermission()
-
-function Intermission()
-    Intermission = true
+function Intermissionn()
+    GM.Intermission = true
     util.AddNetworkString("Intermission")
+    print("Intermissioning - server")
     hook.Add("Think","Intermission",function()
-        if Intermission == true then
-            Time = Time + 0.001
-            if Time >= IntermissionTime then
-                Time = 0
-                Intermission = false
+        if GAMEMODE.Intermission == true then
+            GAMEMODE.Time = GAMEMODE.Time + 0.1
+            print(GAMEMODE.Time)
+            if GAMEMODE.Time >= GAMEMODE.IntermissionTime then
+                GM.Time = 0
+                GM.Intermission = false
                 hook.Remove("Think","Intermission")
+                print("Intermission over - server")
                 StartWave()
             end
         end
     end)
 end
 
+Intermissionn()
+
 function StartWave()
-    if Intermission == true then return end
-    if player.GetHumans() == 0 then return end
+    if GAMEMODE.Intermission == true then return end
+    if #player.GetHumans() == 0 then return end
 
     util.AddNetworkString("StartWave")
 
     hook.Add("Think","Wave",function()
-        Time = Time + 0.001
-        if Time >= WaveTime then
-            Time = 0
+        GAMEMODE.Time = GAMEMODE.Time + 0.001
+        if GAMEMODE.Time >= GAMEMODE.WaveTime then
+            GAMEMODE.Time = 0
             hook.Remove("Think","Wave")
-            Intermission()
+            print("Wave over - server")
+            Intermissionn()
         end
     end)
 
