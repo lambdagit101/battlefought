@@ -5,6 +5,7 @@ SWEP.ViewModel = "models/weapons/c_slam.mdl"
 SWEP.WorldModel = "models/weapons/w_slam.mdl"
 SWEP.ViewModelFOV = 54
 SWEP.UseHands = true
+SWEP.ViewModelFlip = true
 
 SWEP.Slot = 5
 
