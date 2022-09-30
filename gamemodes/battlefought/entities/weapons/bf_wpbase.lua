@@ -1,9 +1,18 @@
+AddCSLuaFile()
+
 SWEP.PrintName = "Maschinenpistole-7"
 SWEP.Purpose = "German SMG, decent damage, great for short to medium-range combat."
+SWEP.Author = "lambups"
+SWEP.Instructions = "Attack button to shoot\nHold secondary Attack button to ADS"
 
 SWEP.ViewModel = "models/weapons/v_smg1.mdl"
 SWEP.WorldModel = "models/weapons/w_smg1.mdl"
 SWEP.ViewModelFOV = 60
+
+SWEP.KillIcon = "x"
+SWEP.KillIconFont = "bfthud-csskillicons"
+SWEP.SelectIcon = "x"
+SWEP.SelectIconFont = "bfthud-cssicons"
 
 SWEP.CSMuzzleFlashes = true
 
@@ -21,8 +30,8 @@ SWEP.Secondary.ClipSize = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 
-SWEP.Equip = {}
-SWEP.Equip.SpeedMP = 0.7985
+SWEP.LeEquip = {}
+SWEP.LeEquip.SpeedMP = 0.7985
 
 SWEP.Bullet = {}
 SWEP.Bullet.HiCal = true
@@ -46,7 +55,7 @@ SWEP.ADS.Cone = 0.0087965
 SWEP.ADS.RecoilMP = 0.6984357895
 SWEP.ADS.Pos = Vector(-6.433, -2.75, 2.542)
 SWEP.ADS.Ang = Angle(0, 0, 0)
-SWEP.ADS.Sound = Sound("Default.Zoom")
+SWEP.ADS.Scope = false
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8756945
@@ -72,6 +81,12 @@ SWEP.Anim.ShellReloadStart = ACT_SHOTGUN_RELOAD_START
 SWEP.Anim.ShellReloadInsert = ACT_VM_RELOAD
 SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 
+SWEP.Crosshair = {}
+SWEP.Crosshair.Enabled = true
+SWEP.Crosshair.TShape = false
+SWEP.Crosshair.HideADS = true
+SWEP.Crosshair.CenterDot = true
+
 SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
@@ -81,7 +96,7 @@ end
 
 function SWEP:Deploy()
 	self:SendWeaponAnim(self.Anim.Equip)
-	self:GetOwner():GetViewModel():SetPlaybackRate(self.Equip.SpeedMP)
+	self:GetOwner():GetViewModel():SetPlaybackRate(self.LeEquip.SpeedMP)
 
 	return true
 end
@@ -95,6 +110,7 @@ function SWEP:SetupDataTables()
     self:NetworkVar("Bool", 1, "Reloading")
     self:NetworkVar("Float", 0, "ReloadTime")
 	self:NetworkVar("Float", 1, "NextIdle")
+    self:NetworkVar("Float", 2, "LastPrimaryFire")
 end
 
 function SWEP:Initialize()
@@ -103,14 +119,61 @@ function SWEP:Initialize()
     self:SetReloadTime(0)
 	self:SetNextIdle(0)
     self:SetHoldType(self.HoldType)
-    self:SetDeploySpeed(self.Equip.SpeedMP)
+    self:SetDeploySpeed(self.LeEquip.SpeedMP)
+    self:SetLastPrimaryFire(0)
+
+    if CLIENT then
+        killicon.AddFont(self:GetClass(), self.KillIconFont, self.KillIcon, Color(0, 255, 0, 200))
+    end
+end
+
+if CLIENT then
+    surface.CreateFont("bfthud-csskillicons", {
+        font = "csd",
+        size = ScreenScale(24),
+        extended = true,
+        weight = 500
+    })
+
+    surface.CreateFont("bfthud-cssicons", {
+        font = "csd",
+        size = ScreenScale(48),
+        extended = true,
+        weight = 500
+    })
+    
+    surface.CreateFont("bfthud-hl2killicons", {
+        font = "HL2MP",
+        size = ScreenScale(24),
+        extended = true,
+        weight = 500
+    })
+
+    surface.CreateFont("bfthud-hl2icons", {
+        font = "HalfLife2",
+        size = ScreenScale(48),
+        extended = true,
+        weight = 500
+    })
+end
+
+function SWEP:DrawWeaponSelection(x, y, wide, tall, alpha)
+	y = y + 10
+	x = x + 10
+	wide = wide - 20
+	
+	draw.SimpleText(self.SelectIcon, self.SelectIconFont, x + wide * 0.5, y + tall * 0.5, Color(0, 255, 0, 200), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+    self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
 end
   
 function SWEP:Reload()
+    if self:Ammo1() == 0 then return end
     if self.Rload.Shells then
         if not self:GetReloading() and self:Clip1() ~= self:GetMaxClip1() then
             self:GetOwner():DoReloadEvent()
             self:SendWeaponAnim(self.Anim.ShellReloadStart)
+            self:QueueIdle()
         
             self:SetReloading(true)
             self:SetReloadTime(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
@@ -122,7 +185,7 @@ function SWEP:Reload()
             self:QueueIdle()
             self:SetReloadTime(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
             self:SetReloading(true)
-            if self.Rload.Sound ~= nil then
+            if self.Rload.Sound then
                 self:EmitSound(self.Rload.Sound)
             end
         end
@@ -131,16 +194,18 @@ end
 
 function SWEP:ReloadThink()
     if self.Rload.Shells then
-        if self:GetReloadTime() <= CurTime() then
+        if self:GetReloading() and self:GetReloadTime() <= CurTime() then
             if self:Clip1() < self:GetMaxClip1() and self:GetOwner():GetAmmoCount(self:GetPrimaryAmmoType()) > 0 and not self:GetOwner():KeyDown(IN_ATTACK) then
                 self:SetClip1(self:Clip1() + self.Rload.ShellInserted)
                 self:GetOwner():RemoveAmmo(self.Rload.ShellInserted, self:GetPrimaryAmmoType())
                 self:SendWeaponAnim(self.Anim.ShellReloadInsert)
+                self:QueueIdle()
                 self:SetReloadTime(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
             else
                 self:SetReloading(false)
         
                 self:SendWeaponAnim(self.Anim.ShellReloadFinish)
+                self:QueueIdle()
                 self:SetReloadTime(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
                 self:QueueIdle()
             end
@@ -160,13 +225,13 @@ end
 function SWEP:IronsightsThink()
     self:SetAimingDownSights(self:GetOwner():KeyDown(IN_ATTACK2) and not self:GetReloading() and not self:IsSprinting())
     self:SetHoldType((self:GetAimingDownSights() and self.AimHoldType or self.HoldType))
-    if self:GetOwner():KeyPressed(IN_ATTACK2) and not self:GetReloading() and not self:IsSprinting() and self.ADS.Sound ~= nil then
+    if self:GetOwner():KeyPressed(IN_ATTACK2) and not self:GetReloading() and not self:IsSprinting() and self.ADS.Sound then
         self:EmitSound(self.ADS.Sound)
     end
 end
 
 function SWEP:QueueIdle()
-	self:SetNextIdle(CurTime() + self.Owner:GetViewModel():SequenceDuration() + 0.1)
+	self:SetNextIdle(CurTime() + self:GetOwner():GetViewModel():SequenceDuration() + 0.1)
 end
 
 function SWEP:IdleThink()
@@ -181,6 +246,7 @@ end
 function SWEP:Think()
     self:ReloadThink()
     self:IronsightsThink()
+    self:IdleThink()
 
     self.BobScale = (self:GetAimingDownSights() and 0.1 or 1)
     self.SwayScale = (self:GetAimingDownSights() and 0.1 or 1)
@@ -189,6 +255,10 @@ end
 function SWEP:Holster()
     self:SetAimingDownSights(false)
     self:SetReloading(false)
+    self:SetNextIdle(0)
+    self:SetReloadTime(0)
+    self:SetReloading(false)
+
     return true
 end
 
@@ -196,15 +266,15 @@ function SWEP:CalculateCone()
     local cone = self.Bullet.Cone
 
     if self:GetOwner():Crouching() then
-        cone = cone * self.Crouch.Cone
+        cone = self.Crouch.Cone
     end
 
     if self:GetAimingDownSights() then
-        cone = cone * self.ADS.Cone
+        cone = self.ADS.Cone
     end
 
-    if not self:GetOwner():OnGround() or self:GetOwner():IsSprinting() then
-        cone = cone * self.ADS.Cone
+    if self:GetOwner():IsSprinting() or not self:GetOwner():OnGround() then
+        cone = self.Movement.Cone
     end
 
     return cone
@@ -260,6 +330,7 @@ end
 function SWEP:PrimaryAttack()
     if self:IsSprinting() or self:GetReloading() or not self:CanPrimaryAttack() then return end
     self:SetNextPrimaryFire(CurTime() + (60 / self.Bullet.RPM))
+    self:SetLastPrimaryFire(CurTime())
 
     self:SendWeaponAnim(self:Clip1() - self.Bullet.Amount <= 0 and self.Anim.ShootEmpty or self.Anim.Shoot)
     self:QueueIdle()
@@ -270,14 +341,6 @@ function SWEP:PrimaryAttack()
     self:FireCoolBullet()
 
     self:ViewPunch()
-end
-
-SWEP.BlurAmount = 0
-function SWEP:PreDrawViewModel(vm, weapon, ply)
-    self.BlurAmount = Lerp(FrameTime() * 15, self.BlurAmount, self:GetReloading() and ScrH() or 0)
-    if math.Round(self.BlurAmount) ~= 0 then
-        DrawToyTown(2, self.BlurAmount)
-    end
 end
 
 function SWEP:DoImpactEffect(tr, nDamageType)
@@ -362,7 +425,37 @@ function SWEP:OffsetThink()
 	self.ViewModelAngle = LerpAngle(FrameTime() * 10, self.ViewModelAngle, offset_ang)
 end
 
-function SWEP:PreDrawViewModel()
+SWEP.Scope = Material("gmod/scope")
+SWEP.ScopeRefract = Material("gmod/scope-refract")
+
+function SWEP:DrawScope()
+    local h = ScrH()
+    local w = h * 1.25
+    local x, y = ScrW() / 2 - w / 2, ScrH() / 2 - h / 2
+    render.UpdateRefractTexture()
+    surface.SetDrawColor(color_black)
+    surface.DrawRect(0, 0, x, ScrH())
+    surface.DrawRect(x + w, 0, ScrW() - (x + w), ScrH())
+    surface.SetMaterial(self.ScopeRefract)
+    surface.DrawTexturedRect(x, y, w, h)
+    surface.SetMaterial(self.Scope)
+    surface.DrawTexturedRect(x, y, w, h)
+    surface.DrawLine(0, ScrH() / 2, ScrW(), ScrH() / 2)
+    surface.DrawLine(ScrW() / 2, 0, ScrW() / 2, ScrH())
+end
+
+function SWEP:DrawHUDBackground()
+    if self:GetAimingDownSights() and self.ADS.Scope then
+        self:DrawScope()
+    end
+end
+
+SWEP.BlurAmount = 0
+function SWEP:PreDrawViewModel(vm, weapon, ply)
+    self.BlurAmount = Lerp(FrameTime() * 15, self.BlurAmount, self:GetReloading() and ScrH() or 0)
+    if math.Round(self.BlurAmount) ~= 0 then
+        DrawToyTown(2, self.BlurAmount)
+    end
 	self:OffsetThink()
 end
 
@@ -376,4 +469,57 @@ function SWEP:GetViewModelPosition( pos, ang )
 	pos = pos + self.ViewModelPos.z * ang:Up()
 
 	return pos, ang
+end
+
+SWEP.CrosshairAlpha = 1
+SWEP.CrosshairSpread = 0
+
+function SWEP:ShouldDrawCrosshair()
+    return not self:GetReloading() and not self:IsSprinting() and self:GetOwner():WaterLevel() ~= 3 and self:HasAmmo() and not self:GetAimingDownSights()
+end
+
+function SWEP:DoDrawCrosshair(x, y)
+    if not self.Crosshair.Enabled then return true end
+
+    self.CrosshairAlpha = Lerp(FrameTime() * 10, self.CrosshairAlpha, self:ShouldDrawCrosshair() and 1 or 0)
+    --self.CrosshairAlpha = 255
+    self.CrosshairSpread = Lerp(FrameTime() * 10, self.CrosshairSpread, self:CalculateCone() * 500)
+
+    self.CrosshairSpread = self.CrosshairSpread + (1 - math.Clamp(math.TimeFraction(self:GetNextPrimaryFire() - (60 / self.Bullet.RPM), self:GetNextPrimaryFire(), CurTime()), 0, 1))
+    surface.SetDrawColor(0, 0, 0, self.CrosshairAlpha * 255)
+    surface.DrawRect(x - 14 - self.CrosshairSpread - 1, y - 2, 12, 4)
+    surface.SetDrawColor(255, 255, 255, self.CrosshairAlpha * 255)
+    surface.DrawRect(x - 14 - self.CrosshairSpread, y - 1, 11, 2)
+    surface.SetDrawColor(0, 0, 0, self.CrosshairAlpha * 255)
+    surface.DrawRect(x + 4 + self.CrosshairSpread - 1, y - 2, 12, 4)
+    surface.SetDrawColor(255, 255, 255, self.CrosshairAlpha * 255)
+    surface.DrawRect(x + 3 + self.CrosshairSpread, y - 1, 11, 2)
+    surface.SetDrawColor(0, 0, 0, self.CrosshairAlpha * 255)
+    surface.DrawRect(x - 2, y + 4 + self.CrosshairSpread - 1, 4, 12)
+    surface.SetDrawColor(255, 255, 255, self.CrosshairAlpha * 255)
+    surface.DrawRect(x - 1, y + 3 + self.CrosshairSpread, 2, 11)
+
+    --Top line
+    if not self.Crosshair.TShape then
+        surface.SetDrawColor(0, 0, 0, self.CrosshairAlpha * 255)
+        surface.DrawRect(x - 2, y - 14 - self.CrosshairSpread - 1, 4, 12)
+        surface.SetDrawColor(255, 255, 255, self.CrosshairAlpha * 255)
+        surface.DrawRect(x - 1, y - 14 - self.CrosshairSpread, 2, 11)
+    end
+
+    --Center dot
+    if self.Crosshair.CenterDot then
+        local alpha = 255 * self.CrosshairAlpha
+
+        if self:GetAimingDownSights() and not self.Crosshair.HideADS then
+            alpha = 255
+        end
+
+        surface.SetDrawColor(0, 0, 0, alpha)
+        surface.DrawRect(x - 2, y - 2, 4, 4)
+        surface.SetDrawColor(255, 255, 255, alpha)
+        surface.DrawRect(x - 1, y - 1, 2, 2)
+    end
+
+    return true
 end

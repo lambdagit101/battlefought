@@ -1,5 +1,5 @@
 SWEP.PrintName = "Armor Charger"
-SWEP.Spawnable = false
+SWEP.Purpose = "General purpose armor charger to aid you in the battlefield."
 
 SWEP.ViewModel = "models/weapons/c_slam.mdl"
 SWEP.WorldModel = "models/weapons/w_slam.mdl"
@@ -7,6 +7,7 @@ SWEP.ViewModelFOV = 54
 SWEP.UseHands = true
 SWEP.ViewModelFlip = true
 
+SWEP.Weight = 1
 SWEP.Slot = 5
 
 SWEP.Primary.Ammo = "armor_charge"

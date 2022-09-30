@@ -1,19 +1,19 @@
 AddCSLuaFile()
 
-SWEP.PrintName = "Maschinenpistole-7"
+SWEP.PrintName = "Uterusmaschinenpistole-45"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "German SMG, decent damage, great for short to medium-range combat."
+SWEP.Purpose = "German SMG, successor of the Maschinenpistole-7, slower, yet "
 
-SWEP.Weight = 16
+SWEP.Weight = 7
 SWEP.Slot = 2
 
-SWEP.KillIcon = "/"
-SWEP.KillIconFont = "bfthud-hl2killicons"
-SWEP.SelectIcon = "a"
-SWEP.SelectIconFont = "bfthud-hl2icons"
+SWEP.KillIcon = "q"
+SWEP.KillIconFont = "bfthud-csskillicons"
+SWEP.SelectIcon = "q"
+SWEP.SelectIconFont = "bfthud-cssicons"
 
-SWEP.ViewModel = "models/weapons/c_smg1.mdl"
-SWEP.WorldModel = "models/weapons/w_smg1.mdl"
+SWEP.ViewModel = "models/weapons/cstrike/c_smg_ump45.mdl"
+SWEP.WorldModel = "models/weapons/w_smg_ump45.mdl"
 SWEP.ViewModelFOV = 60
 
 SWEP.CSMuzzleFlashes = true
@@ -23,8 +23,8 @@ SWEP.HoldType = "smg"
 SWEP.AimHoldType = "rpg"
 
 SWEP.Primary.Ammo = "SMG1"
-SWEP.Primary.ClipSize = 30
-SWEP.Primary.DefaultClip = 30
+SWEP.Primary.ClipSize = 25
+SWEP.Primary.DefaultClip = 25
 SWEP.Primary.Automatic = true
 
 SWEP.Secondary.Ammo = ""
@@ -33,31 +33,30 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 
 SWEP.LeEquip = {}
-SWEP.LeEquip.SpeedMP = 1.2985
+SWEP.LeEquip.SpeedMP = 1.1185
 
 SWEP.Bullet = {}
 SWEP.Bullet.HiCal = true
-SWEP.Bullet.RPM = 750
+SWEP.Bullet.RPM = 571
 SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 29
 SWEP.Bullet.Force = 14
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.015
-SWEP.Bullet.Sound = Sound("Weapon_SMG1.Single")
+SWEP.Bullet.Cone = 0.011
+SWEP.Bullet.Sound = Sound("Weapon_UMP45.Single")
 
 SWEP.Recoil = {}
 SWEP.Recoil.UpwardsRecoil = 1.575
-SWEP.Recoil.SidewaysRecoil = {0.91785, -1.0795}
+SWEP.Recoil.SidewaysRecoil = {0.41785, -0.68795}
 
 SWEP.ADS = {}
-SWEP.ADS.FOVMP = 0.6985
-SWEP.ADS.Speed = 2.25
-SWEP.ADS.Cone = 0.0087965
-SWEP.ADS.RecoilMP = 0.6984357895
-SWEP.ADS.Pos = Vector(-6.433, -2.75, 1.042)
-SWEP.ADS.Ang = Angle(0, 0, 0)
-SWEP.ADS.Sound = Sound("Default.Zoom")
+SWEP.ADS.FOVMP = 0.6685
+SWEP.ADS.Speed = 2.45
+SWEP.ADS.Cone = 0.0067965
+SWEP.ADS.RecoilMP = 0.5984357895
+SWEP.ADS.Pos = Vector(-8.801, 0, 4.4)
+SWEP.ADS.Ang = Angle(-1.489, -0.343, -2.054)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8756945
@@ -86,4 +85,3 @@ SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
-SWEP.Rload.Sound = Sound("Weapon_SMG1.Reload")

@@ -1,19 +1,19 @@
 AddCSLuaFile()
 
-SWEP.PrintName = "United States Match .45"
+SWEP.PrintName = "Herr Six-EighT"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "German Handgun, deals decent damage, a great fallback."
+SWEP.Purpose = "Swiss handgun, medium caliber, great ammo capacity and damage."
 
-SWEP.Weight = 4
+SWEP.Weight = 3
 SWEP.Slot = 1
 
-SWEP.KillIcon = "-"
-SWEP.KillIconFont = "bfthud-hl2killicons"
-SWEP.SelectIcon = "d"
-SWEP.SelectIconFont = "bfthud-hl2icons"
+SWEP.KillIcon = "u"
+SWEP.KillIconFont = "bfthud-csskillicons"
+SWEP.SelectIcon = "u"
+SWEP.SelectIconFont = "bfthud-cssicons"
 
-SWEP.ViewModel = "models/weapons/c_pistol.mdl"
-SWEP.WorldModel = "models/weapons/w_pistol.mdl"
+SWEP.ViewModel = "models/weapons/cstrike/c_pist_fiveseven.mdl"
+SWEP.WorldModel = "models/weapons/w_pist_fiveseven.mdl"
 SWEP.ViewModelFOV = 60
 
 SWEP.CSMuzzleFlashes = true
@@ -23,8 +23,8 @@ SWEP.HoldType = "pistol"
 SWEP.AimHoldType = "revolver"
 
 SWEP.Primary.Ammo = "Pistol"
-SWEP.Primary.ClipSize = 12
-SWEP.Primary.DefaultClip = 12
+SWEP.Primary.ClipSize = 20
+SWEP.Primary.DefaultClip = 20
 SWEP.Primary.Automatic = false
 
 SWEP.Secondary.Ammo = ""
@@ -33,40 +33,40 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 
 SWEP.LeEquip = {}
-SWEP.LeEquip.SpeedMP = 1.32985
+SWEP.LeEquip.SpeedMP = 0.874525
 
 SWEP.Bullet = {}
-SWEP.Bullet.HiCal = false
-SWEP.Bullet.RPM = 400
+SWEP.Bullet.HiCal = true
+SWEP.Bullet.RPM = 444
 SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
-SWEP.Bullet.Damage = 35
-SWEP.Bullet.Force = 9
+SWEP.Bullet.Damage = 24
+SWEP.Bullet.Force = 14
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.015
-SWEP.Bullet.Sound = Sound("Weapon_Pistol.Single")
+SWEP.Bullet.Cone = 0.017
+SWEP.Bullet.Sound = Sound("Weapon_Fiveseven.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 0.678975
-SWEP.Recoil.SidewaysRecoil = {0.11785, -0.1795}
+SWEP.Recoil.UpwardsRecoil = 0.638975
+SWEP.Recoil.SidewaysRecoil = {0.29085, -0.6195}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.7985
-SWEP.ADS.Speed = 5.25
-SWEP.ADS.Cone = 0.0037965
+SWEP.ADS.Speed = 4.95
+SWEP.ADS.Cone = 0.0047965
 SWEP.ADS.RecoilMP = 0.8984357895
-SWEP.ADS.Pos = Vector(-5.96, -3.327, 2.88)
-SWEP.ADS.Ang = Angle(0.414, -1.277, 1.404)
+SWEP.ADS.Pos = Vector(-5.96, -3.327, 2.58)
+SWEP.ADS.Ang = Angle(0.414, 0, 0)
 
 SWEP.Crouch = {}
-SWEP.Crouch.RecoilMP = 0.8756945
-SWEP.Crouch.Cone = 0.00901357835
+SWEP.Crouch.RecoilMP = 0.7856945
+SWEP.Crouch.Cone = 0.01001357835
 
 SWEP.Movement = {}
-SWEP.Movement.RecoilMP = 1.498575
-SWEP.Movement.Cone = 0.05
+SWEP.Movement.RecoilMP = 1.518575
+SWEP.Movement.Cone = 0.06
 SWEP.Movement.Pos = Vector(0, 0, 0)
-SWEP.Movement.Ang = Angle(-5.623, 7.218, -2.52)
+SWEP.Movement.Ang = Angle(-5.523, 7.218, -2.52)
 
 SWEP.Anim = {}
 SWEP.Anim.EquipEmpty = ACT_VM_DEPLOY
@@ -85,9 +85,9 @@ SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
-SWEP.Rload.Sound = Sound("Weapon_Pistol.Reload")
 
 SWEP.Crosshair = {}
+SWEP.Crosshair.Enabled = true
 SWEP.Crosshair.TShape = true
 SWEP.Crosshair.HideADS = true
 SWEP.Crosshair.CenterDot = true
