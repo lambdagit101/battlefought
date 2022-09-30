@@ -9,8 +9,8 @@ SWEP.Slot = 1
 
 SWEP.KillIcon = "-"
 SWEP.KillIconFont = "bfthud-hl2killicons"
-SWEP.SelectIcon = "d"
-SWEP.SelectIconFont = "bfthud-hl2icons"
+SWEP.SelectIcon = "-"
+SWEP.SelectIconFont = "bfthud-hl2killicons"
 
 SWEP.ViewModel = "models/weapons/c_pistol.mdl"
 SWEP.WorldModel = "models/weapons/w_pistol.mdl"

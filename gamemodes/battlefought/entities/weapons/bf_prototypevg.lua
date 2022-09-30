@@ -9,8 +9,8 @@ SWEP.Slot = 2
 
 SWEP.KillIcon = "2"
 SWEP.KillIconFont = "bfthud-hl2killicons"
-SWEP.SelectIcon = "l"
-SWEP.SelectIconFont = "bfthud-hl2icons"
+SWEP.SelectIcon = "2"
+SWEP.SelectIconFont = "bfthud-hl2killicons"
 
 SWEP.ViewModel = "models/weapons/c_irifle.mdl"
 SWEP.WorldModel = "models/weapons/w_irifle.mdl"
