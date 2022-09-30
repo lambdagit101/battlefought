@@ -150,7 +150,7 @@ if CLIENT then
     })
 
     surface.CreateFont("bfthud-hl2icons", {
-        font = "HalfLife2",
+        font = "HL2MP",
         size = ScreenScale(48),
         extended = true,
         weight = 500

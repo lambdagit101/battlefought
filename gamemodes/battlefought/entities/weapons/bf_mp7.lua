@@ -10,7 +10,7 @@ SWEP.Slot = 2
 SWEP.KillIcon = "/"
 SWEP.KillIconFont = "bfthud-hl2killicons"
 SWEP.SelectIcon = "/"
-SWEP.SelectIconFont = "bfthud-hl2killicons"
+SWEP.SelectIconFont = "bfthud-hl2icons"
 
 SWEP.ViewModel = "models/weapons/c_smg1.mdl"
 SWEP.WorldModel = "models/weapons/w_smg1.mdl"
