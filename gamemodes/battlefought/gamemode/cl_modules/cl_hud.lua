@@ -141,7 +141,7 @@ hook.Add("Think", "battle_fought_armorsound", function()
 end)
 
 local drawarmorfor = 0
-local vignettearmor = Color(100, 100, 255)
+local vignettearmor = Color(114, 152, 218)
 local vignettegradient = Material("battlefought/vignette_white.png", "noclamp smooth")
 function DrawEffects()
     if LocalPlayer():Health() < LocalPlayer():GetMaxHealth() / 3 then
