@@ -45,5 +45,7 @@ function SWEP:PrimaryAttack()
     self:TakePrimaryAmmo(1)
     self:SendWeaponAnim(ACT_SLAM_DETONATOR_DETONATE)
     self:EmitSound("items/gift_drop.wav")
-    self:GetOwner():SetArmor(math.Clamp(self:GetOwner():Armor() + 33, 0, self:GetOwner():GetMaxArmor()))
+    if SERVER then
+        self:GetOwner():SetArmor(math.Clamp(self:GetOwner():Armor() + 33, 0, self:GetOwner():GetMaxArmor()))
+    end
 end
