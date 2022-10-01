@@ -54,7 +54,7 @@ SWEP.ADS.FOVMP = 0.6585
 SWEP.ADS.Speed = 2.45
 SWEP.ADS.Cone = 0.0097965
 SWEP.ADS.RecoilMP = 0.7084357895
-SWEP.ADS.Pos = Vector(-7.921, 0, 0.238)
+SWEP.ADS.Pos = Vector(-4.921, 0, 0.238)
 SWEP.ADS.Ang = Angle(2.634, -1.385, -4)
 
 SWEP.Crouch = {}
@@ -88,5 +88,5 @@ SWEP.Rload.ShellInserted = 1
 SWEP.Crosshair = {}
 SWEP.Crosshair.Enabled = true
 SWEP.Crosshair.TShape = true
-SWEP.Crosshair.HideADS = true
+SWEP.Crosshair.HideADS = false
 SWEP.Crosshair.CenterDot = true
