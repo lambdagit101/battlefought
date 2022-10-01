@@ -61,7 +61,7 @@ surface.CreateFont("bfthud_ammosmall_blur", {
 local hudbgcolor = Color(0, 0, 0, 200)
 local hudhpcolor = Color(185, 185, 185)
 local hudhpredcolor = Color(255, 50, 50)
-local hudarcolor = Color(114, 152, 218)
+local hudarcolor = Color(115, 115, 255)
 local hudtxcolor = Color(195, 195, 195)
 local hudtxredcolor = Color(255, 50, 50)
 local hudaxcolor = Color(255, 145, 0)

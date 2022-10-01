@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 SWEP.PrintName = "Stoner DarkRP"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "Austrian rocket propelled grenade launcher, impressive firepower for it's size."
+SWEP.Purpose = "Austrian SMG, amazing for short ranges."
 
 SWEP.Slot = 2
 
@@ -42,27 +42,27 @@ SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 19
 SWEP.Bullet.Force = 10
 SWEP.Bullet.TracerFrequency = 0
-SWEP.Bullet.Cone = 0.013
+SWEP.Bullet.Cone = 0.04
 SWEP.Bullet.Sound = Sound("Weapon_TMP.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 0.538975
-SWEP.Recoil.SidewaysRecoil = {0.19085, -0.5195}
+SWEP.Recoil.UpwardsRecoil = 0.848975
+SWEP.Recoil.SidewaysRecoil = {0.30085, -0.30085}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.7885
 SWEP.ADS.Speed = 4.95
-SWEP.ADS.Cone = 0.0037965
-SWEP.ADS.RecoilMP = 0.5984357895
+SWEP.ADS.Cone = 0.0367965
+SWEP.ADS.RecoilMP = 0.8984357895
 SWEP.ADS.Pos = Vector(-2, -2, 2)
 SWEP.ADS.Ang = Angle(1, 0, 0)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.7856945
-SWEP.Crouch.Cone = 0.01001357835
+SWEP.Crouch.Cone = 0.03801357835
 
 SWEP.Movement = {}
-SWEP.Movement.RecoilMP = 1.518575
+SWEP.Movement.RecoilMP = 1.618575
 SWEP.Movement.Cone = 0.06
 SWEP.Movement.Pos = Vector(0, 0, 0)
 SWEP.Movement.Ang = Angle(-5.523, 7.218, -2.52)
