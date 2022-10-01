@@ -42,7 +42,7 @@ SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 115
 SWEP.Bullet.Force = 14
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.017
+SWEP.Bullet.Cone = 0.016
 SWEP.Bullet.Sound = Sound("Weapon_AWP.Single")
 
 SWEP.Recoil = {}
@@ -65,7 +65,7 @@ SWEP.Crouch.Cone = 0.01001357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.518575
-SWEP.Movement.Cone = 0.06
+SWEP.Movement.Cone = 0.02935
 SWEP.Movement.Pos = Vector(0, -3.967, -0.831)
 SWEP.Movement.Ang = Angle(-3.945, 20.867, -5.367)
 

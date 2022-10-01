@@ -42,7 +42,7 @@ SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 115
 SWEP.Bullet.Force = 13
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.012
+SWEP.Bullet.Cone = 0.015
 SWEP.Bullet.Sound = Sound("Weapon_Scout.Single")
 
 SWEP.Recoil = {}
@@ -52,7 +52,7 @@ SWEP.Recoil.SidewaysRecoil = {0.20085, -0.4195}
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.0885
 SWEP.ADS.Speed = 2.35
-SWEP.ADS.Cone = 0.0037965
+SWEP.ADS.Cone = 0.00907965
 SWEP.ADS.RecoilMP = 0.8984357895
 SWEP.ADS.Pos = Vector(4, 0, 0)
 SWEP.ADS.Ang = Angle(0, 0, 0)
@@ -61,11 +61,11 @@ SWEP.ADS.Sound = Sound("Default.Zoom")
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.7856945
-SWEP.Crouch.Cone = 0.01001357835
+SWEP.Crouch.Cone = 0.01201357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.518575
-SWEP.Movement.Cone = 0.019
+SWEP.Movement.Cone = 0.015
 SWEP.Movement.Pos = Vector(0, -3.967, -0.831)
 SWEP.Movement.Ang = Angle(-3.945, 20.867, -5.367)
 

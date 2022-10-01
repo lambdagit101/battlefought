@@ -43,24 +43,24 @@ SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 53
 SWEP.Bullet.Force = 19
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.015
+SWEP.Bullet.Cone = 0.02
 SWEP.Bullet.Sound = Sound("Weapon_DEagle.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 2.678975
+SWEP.Recoil.UpwardsRecoil = 2.878975
 SWEP.Recoil.SidewaysRecoil = {0.11785, -0.1795}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.7985
 SWEP.ADS.Speed = 5.25
-SWEP.ADS.Cone = 0.0037965
+SWEP.ADS.Cone = 0.0167965
 SWEP.ADS.RecoilMP = 0.8984357895
 SWEP.ADS.Pos = Vector(-6.43, -3.327, 1.71)
 SWEP.ADS.Ang = Angle(0.825, -0.125, 0)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8756945
-SWEP.Crouch.Cone = 0.00901357835
+SWEP.Crouch.Cone = 0.01801357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.998575
