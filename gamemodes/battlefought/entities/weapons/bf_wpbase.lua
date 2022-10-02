@@ -56,7 +56,7 @@ SWEP.ADS.RecoilMP = 0.6984357895
 SWEP.ADS.Pos = Vector(-6.433, -2.75, 2.542)
 SWEP.ADS.Ang = Angle(0, 0, 0)
 SWEP.ADS.Scope = false
-SWEP.ADS.VectorBoost = Vector(0, -175, 0)
+SWEP.ADS.VectorBoost = Vector(0, -105, 0)
 SWEP.ADS.AngleBoost = Angle(0, 0, 0)
 
 SWEP.Crouch = {}
@@ -336,7 +336,9 @@ end
 function SWEP:PrimaryAttack()
     if self:GetOwner():WaterLevel() == 3 or self:IsSprinting() or self:GetReloading() or not self:CanPrimaryAttack() then return end
     self:SetNextPrimaryFire(CurTime() + (60 / self.Bullet.RPM))
-    self:SetLastPrimaryFire(CurTime())
+    if IsFirstTimePredicted() then
+        self:SetLastPrimaryFire(CurTime())
+    end
 
     if not self:GetAimingDownSights() or not self.Crosshair.HideADS then
         self:SendWeaponAnim(self:Clip1() - self.Bullet.Amount <= 0 and self.Anim.ShootEmpty or self.Anim.Shoot)
@@ -426,12 +428,11 @@ function SWEP:AddOffset()
     local basevector = Vector(0, 0, 0)
     local baseangle = Angle(0, 0, 0)
 
-    local adsboost = 0
-    if self:GetLastPrimaryFire() ~= lastfire and self.Crosshair.HideADS and self:GetAimingDownSights() and not self.ADS.Scope then
+    if self:GetLastPrimaryFire() ~= lastprimaryfire and self.Crosshair.HideADS and self:GetAimingDownSights() and not self.ADS.Scope then
         basevector = basevector + self.ADS.VectorBoost
         baseangle = baseangle + self.ADS.AngleBoost
     end
-    lastfire = self:GetLastPrimaryFire()
+    lastprimaryfire = self:GetLastPrimaryFire()
 
     return basevector, baseangle
 end

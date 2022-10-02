@@ -1,19 +1,19 @@
 AddCSLuaFile()
 
-SWEP.PrintName = "Maschinenpistole-5"
+SWEP.PrintName = "FTB-90"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "German SMG, older variant of the Maschinenpistole-5, more accurate and rewarding but less damaging."
+SWEP.Purpose = "Japanese Personal Defence Weapon, firing it's own caliber, it can deal increased damage at short to medium ranges."
 
 SWEP.Weight = 15
 SWEP.Slot = 2
 
-SWEP.KillIcon = "x"
+SWEP.KillIcon = "m"
 SWEP.KillIconFont = "bfthud-csskillicons"
-SWEP.SelectIcon = "x"
+SWEP.SelectIcon = "m"
 SWEP.SelectIconFont = "bfthud-cssicons"
 
-SWEP.ViewModel = "models/weapons/cstrike/c_smg_mp5.mdl"
-SWEP.WorldModel = "models/weapons/w_smg_mp5.mdl"
+SWEP.ViewModel = "models/weapons/cstrike/c_smg_p90.mdl"
+SWEP.WorldModel = "models/weapons/w_smg_p90.mdl"
 SWEP.ViewModelFOV = 60
 
 SWEP.CSMuzzleFlashes = true
@@ -22,9 +22,9 @@ SWEP.UseHands = true
 SWEP.HoldType = "smg"
 SWEP.AimHoldType = "rpg"
 
-SWEP.Primary.Ammo = "Pistol"
-SWEP.Primary.ClipSize = 30
-SWEP.Primary.DefaultClip = 30
+SWEP.Primary.Ammo = "SMG1"
+SWEP.Primary.ClipSize = 50
+SWEP.Primary.DefaultClip = 50
 SWEP.Primary.Automatic = true
 
 SWEP.Secondary.Ammo = ""
@@ -33,38 +33,38 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 
 SWEP.LeEquip = {}
-SWEP.LeEquip.SpeedMP = 1.3185
+SWEP.LeEquip.SpeedMP = 0.9185
 
 SWEP.Bullet = {}
-SWEP.Bullet.HiCal = false
-SWEP.Bullet.RPM = 777
+SWEP.Bullet.HiCal = true
+SWEP.Bullet.RPM = 857
 SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 25
-SWEP.Bullet.Force = 14
+SWEP.Bullet.Force = 18
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.011
-SWEP.Bullet.Sound = Sound("Weapon_MP5Navy.Single")
+SWEP.Bullet.Cone = 0.031
+SWEP.Bullet.Sound = Sound("Weapon_P90.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 0.875
-SWEP.Recoil.SidewaysRecoil = {0.71785, -0.98795}
+SWEP.Recoil.UpwardsRecoil = 1.45
+SWEP.Recoil.SidewaysRecoil = {0.71785, -0.71785}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.6685
 SWEP.ADS.Speed = 2.45
-SWEP.ADS.Cone = 0.0067965
+SWEP.ADS.Cone = 0.021965
 SWEP.ADS.RecoilMP = 0.5984357895
-SWEP.ADS.Pos = Vector(-5.332, -1.806, 1.652)
+SWEP.ADS.Pos = Vector(-2.332, -1.806, 1.652)
 SWEP.ADS.Ang = Angle(1.633, 0, 0)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8756945
-SWEP.Crouch.Cone = 0.00901357835
+SWEP.Crouch.Cone = 0.0301357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.498575
-SWEP.Movement.Cone = 0.012
+SWEP.Movement.Cone = 0.032
 SWEP.Movement.Pos = Vector(0, -3.967, -0.831)
 SWEP.Movement.Ang = Angle(-3.945, 20.867, -5.367)
 
@@ -85,3 +85,9 @@ SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
+
+SWEP.Crosshair = {}
+SWEP.Crosshair.Enabled = true
+SWEP.Crosshair.TShape = true
+SWEP.Crosshair.HideADS = false
+SWEP.Crosshair.CenterDot = true
