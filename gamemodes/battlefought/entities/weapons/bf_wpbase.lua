@@ -93,6 +93,10 @@ SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
 
+SWEP.ViewBob = {}
+SWEP.ViewBob.Attachment = 1
+SWEP.ViewBob.Intensity = -0.1
+
 function SWEP:SecondaryAttack()
 end
 
@@ -340,7 +344,7 @@ function SWEP:PrimaryAttack()
         self:SetLastPrimaryFire(CurTime())
     end
 
-    if not self:GetAimingDownSights() or not self.Crosshair.HideADS then
+    if (not self:GetAimingDownSights() or not self.Crosshair.HideADS) or self.ADS.Scope then
         self:SendWeaponAnim(self:Clip1() - self.Bullet.Amount <= 0 and self.Anim.ShootEmpty or self.Anim.Shoot)
         self:QueueIdle()
     end
@@ -554,4 +558,26 @@ function SWEP:DoDrawCrosshair(x, y)
     end
 
     return true
+end
+
+local vmang = Angle(0, 0, 0)
+function SWEP:CalcView(ply, pos, ang, fov)
+	if LocalPlayer():ShouldDrawLocalPlayer() or not self.ViewBob.Attachment then return end
+
+    local angle = ang
+    local position = pos
+    local fieldofview = fov
+
+    if self:GetReloading() then
+        local att = self:GetOwner():GetViewModel():GetAttachment(self.ViewBob.Attachment or 1)
+
+        vmang = LerpAngle(FrameTime() * 12.5, vmang, Angle(att.Ang.p, att.Ang.y, att.Ang.r * 0.001) * self.ViewBob.Intensity)
+    else
+        vmang = LerpAngle(FrameTime() * 12.5, vmang, Angle(0, 0, 0))
+    end
+    angle:RotateAroundAxis(angle:Right(), vmang.p)
+    angle:RotateAroundAxis(angle:Up(), vmang.r)
+    angle:RotateAroundAxis(angle:Forward(), (vmang.p + vmang.r) / 2)
+
+    return position, angle, fov
 end

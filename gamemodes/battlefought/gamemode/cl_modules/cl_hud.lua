@@ -174,7 +174,10 @@ hook.Add("HUDPaint", "battle_fought_hudpaint", function()
     if shouldHaltHud ~= nil and shouldHaltHud == false then return end
 
     if not LocalPlayer():Alive() then return end
-    DrawEffects()
+
+    if GetConVar("bfthud_attention"):GetBool() then
+        DrawEffects()
+    end
     DrawHealthDisplay()
     DrawAmmo()
 end)
