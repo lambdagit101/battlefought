@@ -56,6 +56,8 @@ SWEP.ADS.RecoilMP = 0.6984357895
 SWEP.ADS.Pos = Vector(-6.433, -2.75, 2.542)
 SWEP.ADS.Ang = Angle(0, 0, 0)
 SWEP.ADS.Scope = false
+SWEP.ADS.VectorBoost = Vector(0, -175, 0)
+SWEP.ADS.AngleBoost = Angle(0, 0, 0)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8756945
@@ -101,8 +103,12 @@ function SWEP:Deploy()
 	return true
 end
 
+function SWEP:IsMoving()
+    return self:GetOwner():GetVelocity():LengthSqr() >= self:GetOwner():GetSlowWalkSpeed() * self:GetOwner():GetSlowWalkSpeed() and self:GetOwner():OnGround()
+end
+
 function SWEP:IsSprinting()
-    return self:GetOwner():IsSprinting() and self:GetOwner():GetVelocity():LengthSqr() >= self:GetOwner():GetSlowWalkSpeed() * self:GetOwner():GetSlowWalkSpeed() and self:GetOwner():OnGround()
+    return self:GetOwner():IsSprinting() and self:IsMoving()
 end
 
 function SWEP:SetupDataTables()
@@ -273,7 +279,7 @@ function SWEP:CalculateCone()
         cone = self.ADS.Cone
     end
 
-    if self:GetOwner():IsSprinting() or not self:GetOwner():OnGround() then
+    if self:IsMoving() or not self:GetOwner():OnGround() then
         cone = self.Movement.Cone
     end
 
@@ -310,7 +316,7 @@ function SWEP:CalculateRecoilMP()
         recoilmp = recoilmp * self.Crouch.RecoilMP
     end
     
-    if not self:GetOwner():OnGround() or self:GetOwner():IsSprinting() then
+    if not self:GetOwner():OnGround() or self:IsMoving() then
         recoilmp = recoilmp * self.Movement.RecoilMP
     end
     
@@ -328,12 +334,14 @@ function SWEP:ViewPunch()
 end
 
 function SWEP:PrimaryAttack()
-    if self:IsSprinting() or self:GetReloading() or not self:CanPrimaryAttack() then return end
+    if self:GetOwner():WaterLevel() == 3 or self:IsSprinting() or self:GetReloading() or not self:CanPrimaryAttack() then return end
     self:SetNextPrimaryFire(CurTime() + (60 / self.Bullet.RPM))
     self:SetLastPrimaryFire(CurTime())
 
-    self:SendWeaponAnim(self:Clip1() - self.Bullet.Amount <= 0 and self.Anim.ShootEmpty or self.Anim.Shoot)
-    self:QueueIdle()
+    if not self:GetAimingDownSights() or not self.Crosshair.HideADS then
+        self:SendWeaponAnim(self:Clip1() - self.Bullet.Amount <= 0 and self.Anim.ShootEmpty or self.Anim.Shoot)
+        self:QueueIdle()
+    end
 	self:GetOwner():MuzzleFlash()
 	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
     self:EmitSound(self.Bullet.Sound)
@@ -375,7 +383,6 @@ function SWEP:DoDrawCrosshair(x, y)
     return false
 end
 
-local sprintsine
 function SWEP:GetOffset()
 	if self:GetReloading() then return end
 
@@ -383,6 +390,8 @@ function SWEP:GetOffset()
     local baseVector = Vector(0 + (velocity / 1000), 0 - (6 * (velocity / 1000)), 0 - (velocity / 1000))
     local baseAngle = Angle(0, 0, 0)
     local airSpread = 0.1675 * (velocity / 500)
+
+    baseAngle = (baseAngle:Forward() + LocalPlayer():EyeAngles():Right() * LocalPlayer():GetViewPunchAngles().y * -0.015 + LocalPlayer():EyeAngles():Up() * LocalPlayer():GetViewPunchAngles().x * 0.015):Angle()
 
     if not self:GetOwner():OnGround() and self:GetOwner():WaterLevel() ~= 3 then
         baseVector:Add(Vector(math.Rand(-airSpread, airSpread), math.Rand(-airSpread, airSpread) / 1.15, math.Rand(-airSpread, airSpread)))
@@ -412,17 +421,35 @@ function SWEP:GetOffset()
     return baseVector, baseAngle
 end
 
+local lastprimaryfire = 0
+function SWEP:AddOffset()
+    local basevector = Vector(0, 0, 0)
+    local baseangle = Angle(0, 0, 0)
+
+    local adsboost = 0
+    if self:GetLastPrimaryFire() ~= lastfire and self.Crosshair.HideADS and self:GetAimingDownSights() and not self.ADS.Scope then
+        basevector = basevector + self.ADS.VectorBoost
+        baseangle = baseangle + self.ADS.AngleBoost
+    end
+    lastfire = self:GetLastPrimaryFire()
+
+    return basevector, baseangle
+end
+
 SWEP.ViewModelPos = Vector( 0, 0, 0 )
 SWEP.ViewModelAngle = Angle( 0, 0, 0 )
 
 function SWEP:OffsetThink()
 	local offset_pos, offset_ang = self:GetOffset()
+    local add_pos, add_ang = self:AddOffset()
 
 	if not offset_pos then offset_pos = vector_origin end
 	if not offset_ang then offset_ang = angle_zero end
+	if not add_pos then add_pos = vector_origin end
+	if not add_ang then add_ang = angle_zero end
 
-	self.ViewModelPos = LerpVector(FrameTime() * 10, self.ViewModelPos, offset_pos)
-	self.ViewModelAngle = LerpAngle(FrameTime() * 10, self.ViewModelAngle, offset_ang)
+	self.ViewModelPos = LerpVector(FrameTime() * 10, self.ViewModelPos, offset_pos + add_pos)
+	self.ViewModelAngle = LerpAngle(FrameTime() * 10, self.ViewModelAngle, offset_ang + add_ang)
 end
 
 SWEP.Scope = Material("gmod/scope")
@@ -508,11 +535,15 @@ function SWEP:DoDrawCrosshair(x, y)
     end
 
     --Center dot
-    if self.Crosshair.CenterDot then
+    if self.Crosshair.CenterDot or (self:GetAimingDownSights() and not self.Crosshair.HideADS) then
         local alpha = 255 * self.CrosshairAlpha
 
         if self:GetAimingDownSights() and not self.Crosshair.HideADS then
             alpha = 255
+        end
+
+        if self.ADS.Scope and self:GetAimingDownSights() then
+            alpha = 0
         end
 
         surface.SetDrawColor(0, 0, 0, alpha)

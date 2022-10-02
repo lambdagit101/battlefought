@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 SWEP.PrintName = "Uterusmaschinenpistole-45"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "German SMG, successor of the Maschinenpistole-7, slower, yet "
+SWEP.Purpose = "German SMG, successor of the Maschinenpistole-7, slower, yet more damaging."
 
 SWEP.Weight = 7
 SWEP.Slot = 2
@@ -57,6 +57,8 @@ SWEP.ADS.Cone = 0.0067965
 SWEP.ADS.RecoilMP = 0.5984357895
 SWEP.ADS.Pos = Vector(-8.801, 0, 4.4)
 SWEP.ADS.Ang = Angle(-1.489, -0.343, -2.054)
+SWEP.ADS.VectorBoost = Vector(0, -175, -5)
+SWEP.ADS.AngleBoost = Angle(4, 0, 0)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8756945

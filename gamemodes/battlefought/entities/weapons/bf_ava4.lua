@@ -42,24 +42,24 @@ SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 31
 SWEP.Bullet.Force = 16
 SWEP.Bullet.TracerFrequency = 0
-SWEP.Bullet.Cone = 0.019875
+SWEP.Bullet.Cone = 0.023875
 SWEP.Bullet.Sound = Sound("Weapon_M4A1.Silenced")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 1.275
+SWEP.Recoil.UpwardsRecoil = 0.975
 SWEP.Recoil.SidewaysRecoil = {0.781785, -0.8795}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.6585
 SWEP.ADS.Speed = 2.45
-SWEP.ADS.Cone = 0.0097965
+SWEP.ADS.Cone = 0.0157965
 SWEP.ADS.RecoilMP = 0.7084357895
 SWEP.ADS.Pos = Vector(-4.921, 0, 0.238)
 SWEP.ADS.Ang = Angle(2.634, -1.385, -4)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8156945
-SWEP.Crouch.Cone = 0.00941357835
+SWEP.Crouch.Cone = 0.01841357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.528575

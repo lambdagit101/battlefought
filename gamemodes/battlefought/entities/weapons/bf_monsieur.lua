@@ -39,10 +39,10 @@ SWEP.Bullet.HiCal = true
 SWEP.Bullet.RPM = 790
 SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
-SWEP.Bullet.Damage = 29
+SWEP.Bullet.Damage = 24
 SWEP.Bullet.Force = 13
 SWEP.Bullet.TracerFrequency = 0
-SWEP.Bullet.Cone = 0.016875
+SWEP.Bullet.Cone = 0.019875
 SWEP.Bullet.Sound = Sound("Weapon_Famas.Single")
 
 SWEP.Recoil = {}
@@ -52,14 +52,14 @@ SWEP.Recoil.SidewaysRecoil = {0.681785, -0.7795}
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.6985
 SWEP.ADS.Speed = 2.65
-SWEP.ADS.Cone = 0.0087965
-SWEP.ADS.RecoilMP = 0.6084357895
+SWEP.ADS.Cone = 0.0147965
+SWEP.ADS.RecoilMP = 0.8084357895
 SWEP.ADS.Pos = Vector(-2.921, 0, 0.238)
 SWEP.ADS.Ang = Angle(2.634, 1.385, -4)
 
 SWEP.Crouch = {}
-SWEP.Crouch.RecoilMP = 0.8156945
-SWEP.Crouch.Cone = 0.00941357835
+SWEP.Crouch.RecoilMP = 0.8756945
+SWEP.Crouch.Cone = 0.016741357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.528575

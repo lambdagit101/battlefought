@@ -47,7 +47,7 @@ SWEP.Bullet.Cone = 0.011
 SWEP.Bullet.Sound = Sound("Weapon_MP5Navy.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 1.375
+SWEP.Recoil.UpwardsRecoil = 0.875
 SWEP.Recoil.SidewaysRecoil = {0.71785, -0.98795}
 
 SWEP.ADS = {}

@@ -1,24 +1,24 @@
 AddCSLuaFile()
 
-SWEP.PrintName = "KZ-M Rodyna"
+SWEP.PrintName = "Bullpup"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "Ukrainian Assault Rifle, great for medium ranges, deals great damage."
+SWEP.Purpose = "Moldavian Assault Rifle, blatant copy of the Blitzer-772."
 
 SWEP.Slot = 2
 
-SWEP.KillIcon = "b"
+SWEP.KillIcon = "e"
 SWEP.KillIconFont = "bfthud-csskillicons"
-SWEP.SelectIcon = "b"
+SWEP.SelectIcon = "e"
 SWEP.SelectIconFont = "bfthud-cssicons"
 
-SWEP.ViewModel = "models/weapons/cstrike/c_rif_ak47.mdl"
-SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"
+SWEP.ViewModel = "models/weapons/cstrike/c_rif_aug.mdl"
+SWEP.WorldModel = "models/weapons/w_rif_aug.mdl"
 SWEP.ViewModelFOV = 60
 
 SWEP.CSMuzzleFlashes = true
 
 SWEP.UseHands = true
-SWEP.HoldType = "ar2"
+SWEP.HoldType = "smg"
 SWEP.AimHoldType = "rpg"
 
 SWEP.Primary.Ammo = "AR2"
@@ -36,30 +36,31 @@ SWEP.LeEquip.SpeedMP = 1
 
 SWEP.Bullet = {}
 SWEP.Bullet.HiCal = true
-SWEP.Bullet.RPM = 600
+SWEP.Bullet.RPM = 666
 SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
-SWEP.Bullet.Damage = 35
-SWEP.Bullet.Force = 19
-SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.01785
-SWEP.Bullet.Sound = Sound("Weapon_AK47.Single")
+SWEP.Bullet.Damage = 28
+SWEP.Bullet.Force = 16
+SWEP.Bullet.TracerFrequency = 0
+SWEP.Bullet.Cone = 0.023875
+SWEP.Bullet.Sound = Sound("Weapon_AUG.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 1.775
-SWEP.Recoil.SidewaysRecoil = {1.01785, -1.4795}
+SWEP.Recoil.UpwardsRecoil = 0.775
+SWEP.Recoil.SidewaysRecoil = {0.38923, -0.38923}
 
 SWEP.ADS = {}
-SWEP.ADS.FOVMP = 0.6585
-SWEP.ADS.Speed = 2.05
-SWEP.ADS.Cone = 0.0117965
-SWEP.ADS.RecoilMP = 0.7084357895
-SWEP.ADS.Pos = Vector(-6.633, -2.75, 2)
-SWEP.ADS.Ang = Angle(2.745, 0, 0)
+SWEP.ADS.FOVMP = 0.3585
+SWEP.ADS.Speed = 2.45
+SWEP.ADS.Cone = 0.0077965
+SWEP.ADS.RecoilMP = 0.9084357895
+SWEP.ADS.Pos = Vector(-4.921, 0, 0.238)
+SWEP.ADS.Ang = Angle(2.634, -1.385, -4)
+SWEP.ADS.Scope = true
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8156945
-SWEP.Crouch.Cone = 0.014541357835
+SWEP.Crouch.Cone = 0.01841357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.528575
@@ -84,3 +85,9 @@ SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
+
+SWEP.Crosshair = {}
+SWEP.Crosshair.Enabled = true
+SWEP.Crosshair.TShape = true
+SWEP.Crosshair.HideADS = false
+SWEP.Crosshair.CenterDot = true

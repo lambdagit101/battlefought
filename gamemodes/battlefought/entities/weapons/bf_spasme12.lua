@@ -1,29 +1,29 @@
 AddCSLuaFile()
 
-SWEP.PrintName = "KZ-M Rodyna"
+SWEP.PrintName = "SPASME-12"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "Ukrainian Assault Rifle, great for medium ranges, deals great damage."
+SWEP.Purpose = "Romanian Shotgun, is most efficient in Galati/Vaslui."
 
 SWEP.Slot = 2
 
-SWEP.KillIcon = "b"
-SWEP.KillIconFont = "bfthud-csskillicons"
-SWEP.SelectIcon = "b"
-SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.KillIcon = "0"
+SWEP.KillIconFont = "bfthud-hl2killicons"
+SWEP.SelectIcon = "0"
+SWEP.SelectIconFont = "bfthud-hl2icons"
 
-SWEP.ViewModel = "models/weapons/cstrike/c_rif_ak47.mdl"
-SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"
+SWEP.ViewModel = "models/weapons/c_shotgun.mdl"
+SWEP.WorldModel = "models/weapons/w_shotgun.mdl"
 SWEP.ViewModelFOV = 60
 
 SWEP.CSMuzzleFlashes = true
 
 SWEP.UseHands = true
-SWEP.HoldType = "ar2"
-SWEP.AimHoldType = "rpg"
+SWEP.HoldType = "shotgun"
+SWEP.AimHoldType = "ar2"
 
-SWEP.Primary.Ammo = "AR2"
-SWEP.Primary.ClipSize = 30
-SWEP.Primary.DefaultClip = 30
+SWEP.Primary.Ammo = "buckshot"
+SWEP.Primary.ClipSize = 6
+SWEP.Primary.DefaultClip = 6
 SWEP.Primary.Automatic = true
 
 SWEP.Secondary.Ammo = ""
@@ -35,35 +35,37 @@ SWEP.LeEquip = {}
 SWEP.LeEquip.SpeedMP = 1
 
 SWEP.Bullet = {}
-SWEP.Bullet.HiCal = true
-SWEP.Bullet.RPM = 600
+SWEP.Bullet.HiCal = false
+SWEP.Bullet.RPM = 76
 SWEP.Bullet.Amount = 1
-SWEP.Bullet.Pellets = 1
-SWEP.Bullet.Damage = 35
-SWEP.Bullet.Force = 19
+SWEP.Bullet.Pellets = 6
+SWEP.Bullet.Damage = 16
+SWEP.Bullet.Force = 4
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.01785
-SWEP.Bullet.Sound = Sound("Weapon_AK47.Single")
+SWEP.Bullet.Cone = 0.09
+SWEP.Bullet.Sound = Sound("Weapon_Shotgun.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 1.775
+SWEP.Recoil.UpwardsRecoil = 2.375
 SWEP.Recoil.SidewaysRecoil = {1.01785, -1.4795}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.6585
 SWEP.ADS.Speed = 2.05
-SWEP.ADS.Cone = 0.0117965
+SWEP.ADS.Cone = 0.047965
 SWEP.ADS.RecoilMP = 0.7084357895
-SWEP.ADS.Pos = Vector(-6.633, -2.75, 2)
-SWEP.ADS.Ang = Angle(2.745, 0, 0)
+SWEP.ADS.Pos = Vector(-9, -2, 3)
+SWEP.ADS.Ang = Angle(1, 0, 0)
+SWEP.ADS.VectorBoost = Vector(0, -175, 3)
+SWEP.ADS.AngleBoost = Angle(6, 0, 0)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8156945
-SWEP.Crouch.Cone = 0.014541357835
+SWEP.Crouch.Cone = 0.0541357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.528575
-SWEP.Movement.Cone = 0.05
+SWEP.Movement.Cone = 0.125
 SWEP.Movement.Pos = Vector(0, -3.967, -0.831)
 SWEP.Movement.Ang = Angle(-3.945, 20.867, -5.367)
 
@@ -82,5 +84,10 @@ SWEP.Anim.ShellReloadInsert = ACT_VM_RELOAD
 SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 
 SWEP.Rload = {}
-SWEP.Rload.Shells = false
+SWEP.Rload.Shells = true
 SWEP.Rload.ShellInserted = 1
+
+SWEP.Crosshair = {}
+SWEP.Crosshair.TShape = true
+SWEP.Crosshair.HideADS = true
+SWEP.Crosshair.CenterDot = true

@@ -43,7 +43,7 @@ SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 35
 SWEP.Bullet.Force = 29
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.02
+SWEP.Bullet.Cone = 0.0245
 SWEP.Bullet.Sound = Sound("Weapon_Galil.Single")
 
 SWEP.Recoil = {}
@@ -53,14 +53,14 @@ SWEP.Recoil.SidewaysRecoil = {1.01785, -1.4795}
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.6585
 SWEP.ADS.Speed = 2.05
-SWEP.ADS.Cone = 0.0097965
+SWEP.ADS.Cone = 0.0157965
 SWEP.ADS.RecoilMP = 0.7084357895
 SWEP.ADS.Pos = Vector(-6.356, 0, 2.276)
 SWEP.ADS.Ang = Angle(0.275, 0, 0)
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8156945
-SWEP.Crouch.Cone = 0.00941357835
+SWEP.Crouch.Cone = 0.01841357835
 
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.528575

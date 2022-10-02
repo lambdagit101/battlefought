@@ -47,7 +47,7 @@ SWEP.Bullet.Cone = 0.015
 SWEP.Bullet.Sound = Sound("Weapon_SMG1.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 1.575
+SWEP.Recoil.UpwardsRecoil = 1.065
 SWEP.Recoil.SidewaysRecoil = {0.91785, -1.0795}
 
 SWEP.ADS = {}

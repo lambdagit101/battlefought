@@ -1,18 +1,19 @@
 AddCSLuaFile()
 
-SWEP.PrintName = "KZ-M Rodyna"
+SWEP.PrintName = "MASHINA-789"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "Ukrainian Assault Rifle, great for medium ranges, deals great damage."
+SWEP.Purpose = "Russian Machine Gun, works best while standing still."
 
+SWEP.Weight = 7
 SWEP.Slot = 2
 
-SWEP.KillIcon = "b"
+SWEP.KillIcon = "z"
 SWEP.KillIconFont = "bfthud-csskillicons"
-SWEP.SelectIcon = "b"
+SWEP.SelectIcon = "z"
 SWEP.SelectIconFont = "bfthud-cssicons"
 
-SWEP.ViewModel = "models/weapons/cstrike/c_rif_ak47.mdl"
-SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"
+SWEP.ViewModel = "models/weapons/cstrike/c_mach_m249para.mdl"
+SWEP.WorldModel = "models/weapons/w_mach_m249para.mdl"
 SWEP.ViewModelFOV = 60
 
 SWEP.CSMuzzleFlashes = true
@@ -21,9 +22,9 @@ SWEP.UseHands = true
 SWEP.HoldType = "ar2"
 SWEP.AimHoldType = "rpg"
 
-SWEP.Primary.Ammo = "AR2"
-SWEP.Primary.ClipSize = 30
-SWEP.Primary.DefaultClip = 30
+SWEP.Primary.Ammo = "ar2"
+SWEP.Primary.ClipSize = 100
+SWEP.Primary.DefaultClip = 100
 SWEP.Primary.Automatic = true
 
 SWEP.Secondary.Ammo = ""
@@ -32,38 +33,38 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 
 SWEP.LeEquip = {}
-SWEP.LeEquip.SpeedMP = 1
+SWEP.LeEquip.SpeedMP = 1.1185
 
 SWEP.Bullet = {}
 SWEP.Bullet.HiCal = true
-SWEP.Bullet.RPM = 600
+SWEP.Bullet.RPM = 750
 SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 35
 SWEP.Bullet.Force = 19
 SWEP.Bullet.TracerFrequency = 1
-SWEP.Bullet.Cone = 0.01785
-SWEP.Bullet.Sound = Sound("Weapon_AK47.Single")
+SWEP.Bullet.Cone = 0.03
+SWEP.Bullet.Sound = Sound("Weapon_M249.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 1.775
-SWEP.Recoil.SidewaysRecoil = {1.01785, -1.4795}
+SWEP.Recoil.UpwardsRecoil = 2.275
+SWEP.Recoil.SidewaysRecoil = {0.51785, -0.38795}
 
 SWEP.ADS = {}
-SWEP.ADS.FOVMP = 0.6585
-SWEP.ADS.Speed = 2.05
-SWEP.ADS.Cone = 0.0117965
-SWEP.ADS.RecoilMP = 0.7084357895
-SWEP.ADS.Pos = Vector(-6.633, -2.75, 2)
-SWEP.ADS.Ang = Angle(2.745, 0, 0)
+SWEP.ADS.FOVMP = 0.6685
+SWEP.ADS.Speed = 1.45
+SWEP.ADS.Cone = 0.0247965
+SWEP.ADS.RecoilMP = 0.7984357895
+SWEP.ADS.Pos = Vector(-5.9275, 0, 2)
+SWEP.ADS.Ang = Angle(0.6575, 0, 0)
 
 SWEP.Crouch = {}
-SWEP.Crouch.RecoilMP = 0.8156945
-SWEP.Crouch.Cone = 0.014541357835
+SWEP.Crouch.RecoilMP = 0.8756945
+SWEP.Crouch.Cone = 0.02501357835
 
 SWEP.Movement = {}
-SWEP.Movement.RecoilMP = 1.528575
-SWEP.Movement.Cone = 0.05
+SWEP.Movement.RecoilMP = 1.498575
+SWEP.Movement.Cone = 0.07
 SWEP.Movement.Pos = Vector(0, -3.967, -0.831)
 SWEP.Movement.Ang = Angle(-3.945, 20.867, -5.367)
 
