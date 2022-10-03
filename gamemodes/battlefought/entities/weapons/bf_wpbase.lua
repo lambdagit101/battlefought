@@ -18,7 +18,7 @@ SWEP.SelectIconColor = Color(200, 200, 0)
 SWEP.SelectIconBlur = true 
 SWEP.BlurSelectIcon = "x"
 SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
-SWEP.SelectIconBlurColor = Color(100, 100, 0, 150)
+SWEP.SelectIconBlurColor = Color(200, 200, 0, 150)
 
 SWEP.CSMuzzleFlashes = true
 
@@ -162,8 +162,8 @@ if CLIENT then
         size = ScreenScale(48),
         extended = true,
         weight = 500,
-        blursize = 6,
-        additive = true
+        blursize = 12,
+        scanlines = 5
     })
     
     surface.CreateFont("bfthud-hl2killicons", {
@@ -184,8 +184,9 @@ if CLIENT then
         size = ScreenScale(48),
         extended = true,
         weight = 500,
-        blursize = 6,
-        additive = true
+        blursize = 12,
+        additive = true,
+        scanlines = 5
     })
 end
 

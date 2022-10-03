@@ -2,7 +2,7 @@ AddCSLuaFile()
 
 SWEP.PrintName = "IDDQD Gold Beagle"
 SWEP.Base = "bf_wpbase"
-SWEP.Purpose = "Palestinian hand cannon, can quickly destroy one's armor."
+SWEP.Purpose = "Palestinian Hand Cannon, can quickly destroy one's armor."
 
 SWEP.Weight = 7
 SWEP.Slot = 1
