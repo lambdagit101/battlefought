@@ -10,6 +10,8 @@ SWEP.KillIcon = "0"
 SWEP.KillIconFont = "bfthud-hl2killicons"
 SWEP.SelectIcon = "0"
 SWEP.SelectIconFont = "bfthud-hl2icons"
+SWEP.BlurSelectIcon = "0"
+SWEP.SelectIconBlurFont = "bfthud-hl2icons-blur"
 
 SWEP.ViewModel = "models/weapons/c_shotgun.mdl"
 SWEP.WorldModel = "models/weapons/w_shotgun.mdl"

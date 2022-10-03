@@ -11,6 +11,8 @@ SWEP.KillIcon = "v"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.SelectIcon = "v"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.BlurSelectIcon = "v"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_rif_galil.mdl"
 SWEP.WorldModel = "models/weapons/w_rif_galil.mdl"

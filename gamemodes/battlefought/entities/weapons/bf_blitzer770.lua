@@ -10,6 +10,8 @@ SWEP.KillIcon = "o"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.SelectIcon = "o"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.BlurSelectIcon = "o"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_snip_sg550.mdl"
 SWEP.WorldModel = "models/weapons/w_snip_sg550.mdl"

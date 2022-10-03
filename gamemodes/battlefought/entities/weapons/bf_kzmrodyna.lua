@@ -10,6 +10,8 @@ SWEP.KillIcon = "b"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.SelectIcon = "b"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.BlurSelectIcon = "b"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_rif_ak47.mdl"
 SWEP.WorldModel = "models/weapons/w_rif_ak47.mdl"

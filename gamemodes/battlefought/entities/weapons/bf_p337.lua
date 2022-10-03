@@ -11,6 +11,8 @@ SWEP.KillIcon = "a"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.SelectIcon = "a"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.BlurSelectIcon = "a"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_pist_p228.mdl"
 SWEP.WorldModel = "models/weapons/w_pist_p228.mdl"

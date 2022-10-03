@@ -10,6 +10,8 @@ SWEP.KillIcon = "r"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.SelectIcon = "r"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.BlurSelectIcon = "r"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_snip_awp.mdl"
 SWEP.WorldModel = "models/weapons/w_snip_awp.mdl"

@@ -11,6 +11,8 @@ SWEP.KillIcon = "z"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.SelectIcon = "z"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.BlurSelectIcon = "z"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_mach_m249para.mdl"
 SWEP.WorldModel = "models/weapons/w_mach_m249para.mdl"

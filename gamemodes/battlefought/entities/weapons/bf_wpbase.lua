@@ -11,8 +11,14 @@ SWEP.ViewModelFOV = 60
 
 SWEP.KillIcon = "x"
 SWEP.KillIconFont = "bfthud-csskillicons"
+SWEP.KillIconColor = Color(255, 80, 0, 200)
 SWEP.SelectIcon = "x"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.SelectIconColor = Color(200, 200, 0)
+SWEP.SelectIconBlur = true 
+SWEP.BlurSelectIcon = "x"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
+SWEP.SelectIconBlurColor = Color(100, 100, 0, 150)
 
 SWEP.CSMuzzleFlashes = true
 
@@ -108,7 +114,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:IsMoving()
-    return self:GetOwner():GetVelocity():LengthSqr() >= self:GetOwner():GetSlowWalkSpeed() * self:GetOwner():GetSlowWalkSpeed() and self:GetOwner():OnGround()
+    return self:GetOwner():GetVelocity():LengthSqr() >= (self:GetOwner():GetSlowWalkSpeed() * 0.85) * (self:GetOwner():GetSlowWalkSpeed() * 0.85) and self:GetOwner():OnGround()
 end
 
 function SWEP:IsSprinting()
@@ -133,7 +139,7 @@ function SWEP:Initialize()
     self:SetLastPrimaryFire(0)
 
     if CLIENT then
-        killicon.AddFont(self:GetClass(), self.KillIconFont, self.KillIcon, Color(0, 255, 0, 200))
+        killicon.AddFont(self:GetClass(), self.KillIconFont, self.KillIcon, self.KillIconColor)
     end
 end
 
@@ -151,6 +157,14 @@ if CLIENT then
         extended = true,
         weight = 500
     })
+    surface.CreateFont("bfthud-cssicons-blur", {
+        font = "csd",
+        size = ScreenScale(48),
+        extended = true,
+        weight = 500,
+        blursize = 6,
+        additive = true
+    })
     
     surface.CreateFont("bfthud-hl2killicons", {
         font = "HL2MP",
@@ -165,6 +179,14 @@ if CLIENT then
         extended = true,
         weight = 500
     })
+    surface.CreateFont("bfthud-hl2icons-blur", {
+        font = "HL2MP",
+        size = ScreenScale(48),
+        extended = true,
+        weight = 500,
+        blursize = 6,
+        additive = true
+    })
 end
 
 function SWEP:DrawWeaponSelection(x, y, wide, tall, alpha)
@@ -172,7 +194,10 @@ function SWEP:DrawWeaponSelection(x, y, wide, tall, alpha)
 	x = x + 10
 	wide = wide - 20
 	
-	draw.SimpleText(self.SelectIcon, self.SelectIconFont, x + wide * 0.5, y + tall * 0.5, Color(0, 255, 0, 200), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    if self.SelectIconBlur then
+        draw.SimpleText(self.BlurSelectIcon, self.SelectIconBlurFont, x + wide * 0.5, y + tall * 0.5, self.SelectIconBlurColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+	draw.SimpleText(self.SelectIcon, self.SelectIconFont, x + wide * 0.5, y + tall * 0.5, self.SelectIconColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
 end
@@ -388,12 +413,6 @@ function SWEP:SetDeploySpeed(speed)
 	self.m_WeaponDeploySpeed = tonumber(speed)
 end
 
-function SWEP:DoDrawCrosshair(x, y)
-    local offsetFromTsentr = 0
-
-    return false
-end
-
 function SWEP:GetOffset()
 	if self:GetReloading() then return end
 
@@ -432,16 +451,16 @@ function SWEP:GetOffset()
     return baseVector, baseAngle
 end
 
-local lastprimaryfire = 0
+SWEP.LastPrimaryFire = 0
 function SWEP:AddOffset()
     local basevector = Vector(0, 0, 0)
     local baseangle = Angle(0, 0, 0)
 
-    if self:GetLastPrimaryFire() ~= lastprimaryfire and self.Crosshair.HideADS and self:GetAimingDownSights() and not self.ADS.Scope then
+    if self:GetLastPrimaryFire() ~= self.LastPrimaryFire and self.Crosshair.HideADS and self:GetAimingDownSights() and not self.ADS.Scope then
         basevector = basevector + self.ADS.VectorBoost
         baseangle = baseangle + self.ADS.AngleBoost
     end
-    lastprimaryfire = self:GetLastPrimaryFire()
+    self.LastPrimaryFire = self:GetLastPrimaryFire()
 
     return basevector, baseangle
 end
@@ -515,6 +534,18 @@ function SWEP:ShouldDrawCrosshair()
     return not self:GetReloading() and not self:IsSprinting() and self:GetOwner():WaterLevel() ~= 3 and self:HasAmmo() and not self:GetAimingDownSights()
 end
 
+SWEP.FiredAShot = 0
+function SWEP:AddCrosshairSpread()
+    local bread = 0
+
+    if self.FiredAShot ~= self:GetLastPrimaryFire() then
+        bread = bread + 25
+    end
+    self.FiredAShot = self:GetLastPrimaryFire()
+
+    return bread
+end
+
 function SWEP:DoDrawCrosshair(x, y)
     if not self.Crosshair.Enabled then return true end
 
@@ -522,7 +553,7 @@ function SWEP:DoDrawCrosshair(x, y)
     --self.CrosshairAlpha = 255
     self.CrosshairSpread = Lerp(FrameTime() * 10, self.CrosshairSpread, self:CalculateCone() * 500)
 
-    self.CrosshairSpread = self.CrosshairSpread + (1 - math.Clamp(math.TimeFraction(self:GetNextPrimaryFire() - (60 / self.Bullet.RPM), self:GetNextPrimaryFire(), CurTime()), 0, 1))
+    self.CrosshairSpread = self.CrosshairSpread + self:AddCrosshairSpread()
     surface.SetDrawColor(0, 0, 0, self.CrosshairAlpha * 255)
     surface.DrawRect(x - 14 - self.CrosshairSpread - 1, y - 2, 12, 4)
     surface.SetDrawColor(255, 255, 255, self.CrosshairAlpha * 255)

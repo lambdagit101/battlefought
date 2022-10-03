@@ -11,6 +11,8 @@ SWEP.KillIcon = "u"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.SelectIcon = "u"
 SWEP.SelectIconFont = "bfthud-cssicons"
+SWEP.BlurSelectIcon = "u"
+SWEP.SelectIconBlurFont = "bfthud-cssicons-blur"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_pist_fiveseven.mdl"
 SWEP.WorldModel = "models/weapons/w_pist_fiveseven.mdl"
