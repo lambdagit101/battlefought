@@ -596,6 +596,7 @@ function SWEP:DoDrawCrosshair(x, y)
     return true
 end
 
+--[[
 local vmang = Angle(0, 0, 0)
 function SWEP:CalcView(ply, pos, ang, fov)
 	if LocalPlayer():ShouldDrawLocalPlayer() or not self.ViewBob.Attachment then return end
@@ -617,3 +618,4 @@ function SWEP:CalcView(ply, pos, ang, fov)
 
     return position, angle, fov
 end
+]]
