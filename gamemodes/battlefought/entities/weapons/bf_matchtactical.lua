@@ -7,9 +7,9 @@ SWEP.Purpose = "German Handgun, police variant of the United States Match .45."
 SWEP.Weight = 5
 SWEP.Slot = 1
 
-SWEP.KillIcon = "a"
+SWEP.KillIcon = "y"
 SWEP.KillIconFont = "bfthud-csskillicons"
-SWEP.SelectIcon = "a"
+SWEP.SelectIcon = "y"
 SWEP.SelectIconFont = "bfthud-cssicons"
 
 SWEP.ViewModel = "models/weapons/cstrike/c_pist_usp.mdl"
