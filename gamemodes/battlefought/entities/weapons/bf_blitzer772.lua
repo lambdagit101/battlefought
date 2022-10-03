@@ -51,7 +51,7 @@ SWEP.Recoil.SidewaysRecoil = {0.18923, -1.0795}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.3585
-SWEP.ADS.Speed = 2.45
+SWEP.ADS.Speed = 7.45
 SWEP.ADS.Cone = 0.0087965
 SWEP.ADS.RecoilMP = 0.7084357895
 SWEP.ADS.Pos = Vector(-4.921, 0, 0.238)
@@ -69,8 +69,8 @@ SWEP.Movement.Pos = Vector(0, -3.967, -0.831)
 SWEP.Movement.Ang = Angle(-3.945, 20.867, -5.367)
 
 SWEP.Anim = {}
-SWEP.Anim.EquipEmpty = ACT_VM_DEPLOY
-SWEP.Anim.Equip = ACT_VM_DEPLOY
+SWEP.Anim.EquipEmpty = ACT_VM_DRAW
+SWEP.Anim.Equip = ACT_VM_DRAW
 SWEP.Anim.ShootEmpty = ACT_VM_PRIMARYATTACK
 SWEP.Anim.Shoot = ACT_VM_PRIMARYATTACK
 SWEP.Anim.ReloadEmpty = ACT_VM_RELOAD

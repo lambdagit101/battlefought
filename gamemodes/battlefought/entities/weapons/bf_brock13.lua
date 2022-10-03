@@ -33,7 +33,7 @@ SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic = false
 
 SWEP.LeEquip = {}
-SWEP.LeEquip.SpeedMP = 0.674525
+SWEP.LeEquip.SpeedMP = 0.974525
 
 SWEP.Bullet = {}
 SWEP.Bullet.HiCal = false
@@ -52,7 +52,7 @@ SWEP.Recoil.SidewaysRecoil = {0.19085, -0.5195}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.7885
-SWEP.ADS.Speed = 4.95
+SWEP.ADS.Speed = 17.95
 SWEP.ADS.Cone = 0.0037965
 SWEP.ADS.RecoilMP = 0.7984357895
 SWEP.ADS.Pos = Vector(-5.79, -3.327, 2.58)
@@ -69,8 +69,8 @@ SWEP.Movement.Pos = Vector(0, 0, 0)
 SWEP.Movement.Ang = Angle(-5.523, 7.218, -2.52)
 
 SWEP.Anim = {}
-SWEP.Anim.EquipEmpty = ACT_VM_DEPLOY
-SWEP.Anim.Equip = ACT_VM_DEPLOY
+SWEP.Anim.EquipEmpty = ACT_VM_DRAW
+SWEP.Anim.Equip = ACT_VM_DRAW
 SWEP.Anim.ShootEmpty = ACT_VM_PRIMARYATTACK
 SWEP.Anim.Shoot = ACT_VM_PRIMARYATTACK
 SWEP.Anim.ReloadEmpty = ACT_VM_RELOAD

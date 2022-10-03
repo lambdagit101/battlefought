@@ -56,7 +56,7 @@ SWEP.ADS.RecoilMP = 0.6984357895
 SWEP.ADS.Pos = Vector(-6.433, -2.75, 2.542)
 SWEP.ADS.Ang = Angle(0, 0, 0)
 SWEP.ADS.Scope = false
-SWEP.ADS.VectorBoost = Vector(0, -105, 0)
+SWEP.ADS.VectorBoost = Vector(0, -3, 0)
 SWEP.ADS.AngleBoost = Angle(0, 0, 0)
 
 SWEP.Crouch = {}
@@ -70,8 +70,8 @@ SWEP.Movement.Pos = Vector(0, -3.967, -0.831)
 SWEP.Movement.Ang = Angle(-3.945, 20.867, -5.367)
 
 SWEP.Anim = {}
-SWEP.Anim.EquipEmpty = ACT_VM_DEPLOY_EMPTY
-SWEP.Anim.Equip = ACT_VM_DEPLOY
+SWEP.Anim.EquipEmpty = ACT_VM_DRAW_EMPTY
+SWEP.Anim.Equip = ACT_VM_DRAW
 SWEP.Anim.ShootEmpty = ACT_VM_PRIMARYATTACK_EMPTY
 SWEP.Anim.Shoot = ACT_VM_PRIMARYATTACK
 SWEP.Anim.ReloadEmpty = ACT_VM_RELOAD_EMPTY
@@ -370,8 +370,13 @@ function SWEP:DoImpactEffect(tr, nDamageType)
 end
 
 SWEP.FOVMP = 1
+SWEP.LastFOVUpdate = 0
 function SWEP:TranslateFOV(fov)
-    self.FOVMP = Lerp(FrameTime() * self.ADS.Speed, self.FOVMP, self:GetAimingDownSights() and self.ADS.FOVMP or 1)
+    if self.LastFOVUpdate < CurTime() then
+        self.FOVMP = Lerp(FrameTime() * self.ADS.Speed, self.FOVMP, self:GetAimingDownSights() and self.ADS.FOVMP or 1)
+        self.LastFOVUpdate = CurTime()
+    end
+
 	return fov * self.FOVMP
 end
 
@@ -453,8 +458,8 @@ function SWEP:OffsetThink()
 	if not add_pos then add_pos = vector_origin end
 	if not add_ang then add_ang = angle_zero end
 
-	self.ViewModelPos = LerpVector(FrameTime() * 10, self.ViewModelPos, offset_pos + add_pos)
-	self.ViewModelAngle = LerpAngle(FrameTime() * 10, self.ViewModelAngle, offset_ang + add_ang)
+	self.ViewModelPos = LerpVector(FrameTime() * 10, self.ViewModelPos, offset_pos) + add_pos
+	self.ViewModelAngle = LerpAngle(FrameTime() * 10, self.ViewModelAngle, offset_ang) + add_ang
 end
 
 SWEP.Scope = Material("gmod/scope")
@@ -571,13 +576,13 @@ function SWEP:CalcView(ply, pos, ang, fov)
     if self:GetReloading() then
         local att = self:GetOwner():GetViewModel():GetAttachment(self.ViewBob.Attachment or 1)
 
-        vmang = LerpAngle(FrameTime() * 12.5, vmang, Angle(att.Ang.p, att.Ang.y, att.Ang.r * 0.001) * self.ViewBob.Intensity)
+        vmang = LerpAngle(FrameTime() * 12.5, vmang, (Angle(att.Ang.p, att.Ang.y, att.Ang.r * 0) * self.ViewBob.Intensity))
     else
         vmang = LerpAngle(FrameTime() * 12.5, vmang, Angle(0, 0, 0))
     end
     angle:RotateAroundAxis(angle:Right(), vmang.p)
     angle:RotateAroundAxis(angle:Up(), vmang.r)
-    angle:RotateAroundAxis(angle:Forward(), (vmang.p + vmang.r) / 2)
+    angle:RotateAroundAxis(angle:Forward(), vmang.p + vmang.r)
 
     return position, angle, fov
 end
