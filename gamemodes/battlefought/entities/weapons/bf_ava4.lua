@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-SWEP.PrintName = "Enola AVA-1"
+SWEP.PrintName = "Enola AVA-4"
 SWEP.Base = "bf_wpbase"
 SWEP.Purpose = "American Assault Rifle, it has decently low recoil and decent damage. Perfect for black ops."
 
