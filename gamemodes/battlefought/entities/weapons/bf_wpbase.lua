@@ -64,6 +64,7 @@ SWEP.ADS.Ang = Angle(0, 0, 0)
 SWEP.ADS.Scope = false
 SWEP.ADS.VectorBoost = Vector(0, -3, 0)
 SWEP.ADS.AngleBoost = Angle(0, 0, 0)
+SWEP.ADS.Anim = false
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8756945
@@ -98,6 +99,7 @@ SWEP.Crosshair.CenterDot = true
 SWEP.Rload = {}
 SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
+SWEP.Rload.Garand = false
 
 SWEP.ViewBob = {}
 SWEP.ViewBob.Attachment = 1
@@ -204,7 +206,7 @@ function SWEP:DrawWeaponSelection(x, y, wide, tall, alpha)
 end
   
 function SWEP:Reload()
-    if self:Ammo1() == 0 then return end
+    if self:Ammo1() == 0 or (self.Rload.Garand and self:Clip1() ~= 0) then return end
     if self.Rload.Shells then
         if not self:GetReloading() and self:Clip1() ~= self:GetMaxClip1() then
             self:GetOwner():DoReloadEvent()
@@ -370,7 +372,7 @@ function SWEP:PrimaryAttack()
         self:SetLastPrimaryFire(CurTime())
     end
 
-    if (not self:GetAimingDownSights() or not self.Crosshair.HideADS) or self.ADS.Scope then
+    if (not self:GetAimingDownSights() or not self.Crosshair.HideADS) or self.ADS.Scope or self.ADS.Anim then
         self:SendWeaponAnim(self:Clip1() - self.Bullet.Amount <= 0 and self.Anim.ShootEmpty or self.Anim.Shoot)
         self:QueueIdle()
     end
