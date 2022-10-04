@@ -71,13 +71,13 @@ SWEP.Movement.Pos = Vector(0, 0, 0)
 SWEP.Movement.Ang = Angle(-5.623, 7.218, -2.52)
 
 SWEP.Anim = {}
-SWEP.Anim.EquipEmpty = ACT_VM_DRAW
+SWEP.Anim.EquipEmpty = ACT_VM_DRAW_EMPTY
 SWEP.Anim.Equip = ACT_VM_DRAW
 SWEP.Anim.ShootEmpty = ACT_VM_PRIMARYATTACK
 SWEP.Anim.Shoot = ACT_VM_PRIMARYATTACK
 SWEP.Anim.ReloadEmpty = ACT_VM_RELOAD
 SWEP.Anim.Reload = ACT_VM_RELOAD
-SWEP.Anim.IdleEmpty = ACT_VM_IDLE
+SWEP.Anim.IdleEmpty = ACT_VM_IDLE_EMPTY
 SWEP.Anim.Idle = ACT_VM_IDLE
 
 SWEP.Anim.ShellReloadStart = ACT_SHOTGUN_RELOAD_START
