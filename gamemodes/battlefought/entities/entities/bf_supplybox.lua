@@ -18,8 +18,10 @@ end
 function ENT:Use(ply)
     self:Remove()
 
-    ply:Give("item_healthvial")
-    ply:GiveAmmo(math.random(0, 1), "armor_charge", false)
+    if ply:Health() < ply:GetMaxHealth() then
+        ply:Give("item_healthvial")
+        ply:GiveAmmo(math.random(0, 1), "armor_charge", false)
+    end
     
     local weapon, rarity = GAMEMODE:ReturnRandomWeapon()
 
@@ -31,7 +33,8 @@ function ENT:Use(ply)
     else
         self:EmitSound("common/bugreporter_failed.wav")
     end
-    ply:Give(weapon)
 
-    ply:GiveAmmo(ply:GetWeapon(weapon):Clip1() * 2, ply:GetWeapon(weapon):GetPrimaryAmmoType(), false)
+    local droppedWeapon = ents.Create(weapon)
+    droppedWeapon:SetPos(self:GetPos() + Vector(0, 0, 5))
+    droppedWeapon:Spawn()
 end

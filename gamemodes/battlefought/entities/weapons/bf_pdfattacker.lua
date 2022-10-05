@@ -49,8 +49,8 @@ SWEP.Bullet.Cone = 0.0245
 SWEP.Bullet.Sound = Sound("Weapon_Galil.Single")
 
 SWEP.Recoil = {}
-SWEP.Recoil.UpwardsRecoil = 1.475
-SWEP.Recoil.SidewaysRecoil = {1.01785, -1.4795}
+SWEP.Recoil.UpwardsRecoil = 1.175
+SWEP.Recoil.SidewaysRecoil = {0.71785, -0.9795}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.6585

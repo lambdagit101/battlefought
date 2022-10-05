@@ -22,8 +22,8 @@ end)
 util.AddNetworkString("battle-fought-loadout")
 hook.Add("PlayerSpawn", "battle-fought-warmup-loadout", function(ply)
     if not GetGlobalBool("battle-fought-mip") then
-        local primaryWeapon = BF.Primaries[math.random(#BF.Primaries)]
-        local secondaryWeapon = BF.Secondaries[math.random(#BF.Secondaries)]
+        local _, primaryWeapon = table.Random(BF.Primaries)
+        local _, secondaryWeapon = table.Random(BF.Secondaries)
 
         ply:Give(primaryWeapon, false)
         ply:GiveAmmo(ply:GetWeapon(primaryWeapon):Clip1() * 2, ply:GetWeapon(primaryWeapon):GetPrimaryAmmoType(), true)
@@ -43,11 +43,11 @@ hook.Add("PlayerCanPickupWeapon", "noDoublePickup", function( ply, weapon )
 	end
 end)
 
-hook.Add("PlayerInitialSpawn", "battle-fought-initial-spawn", function(ply)
+function GM:PlayerInitialSpawn(ply)
     if GetGlobalBool("battle-fought-mip") then
         ply:KillSilent()
     end
-end)
+end
 
 hook.Add("PlayerDeath", "battle-fought-deathcam", function(victim, inflictor, attacker)
     victim:Spectate(OBS_MODE_DEATHCAM)

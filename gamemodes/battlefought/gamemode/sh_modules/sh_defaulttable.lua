@@ -51,36 +51,39 @@ function GM:GenerateDefaultBFTable()
     }
 
     meinTable.Primaries = {
-        "bf_cigma690",
-        "bf_bullpup",
-        "bf_blitzer772",
-        "bf_m789",
-        "bf_prototypevg",
-        "bf_pdfattacker",
-        "bf_marksmanp",
-        "bf_mp7",
-        "bf_ump45",
-        "bf_futaba90",
-        "bf_ava4",
-        "bf_cigma480",
-        "bf_drp",
-        "bf_kzmrodyna",
-        "bf_monsieur",
-        "bf_gewehr3",
-        "bf_blitzer770",
-        "bf_bigmac12",
-        "bf_mp5",
-        "bf_marksmanc"
+        ["bf_cigma690"] = true,
+        ["bf_bullpup"] = true,
+        ["bf_blitzer772"] = true,
+        ["bf_m789"] = true,
+        ["bf_prototypevg"] = true,
+        ["bf_pdfattacker"] = true,
+        ["bf_marksmanp"] = true,
+        ["bf_mp7"] = true,
+        ["bf_ump45"] = true,
+        ["bf_futaba90"] = true,
+        ["bf_ava4"] = true,
+        ["bf_cigma480"] = true,
+        ["bf_drp"] = true,
+        ["bf_kzmrodyna"] = true,
+        ["bf_monsieur"] = true,
+        ["bf_gewehr3"] = true,
+        ["bf_blitzer770"] = true,
+        ["bf_bigmac12"] = true,
+        ["bf_mp5"] = true,
+        ["bf_marksmanc"] = true
     }
 
     meinTable.Secondaries = {
-        "bf_goldbeagle",
-        "bf_p337",
-        "bf_sixeight",
-        "bf_match45",
-        "bf_matchtactical",
-        "bf_brock13"
+        ["bf_goldbeagle"] = true,
+        ["bf_p337"] = true,
+        ["bf_sixeight"] = true,
+        ["bf_match45"] = true,
+        ["bf_matchtactical"] = true,
+        ["bf_brock13"] = true
     }
+
+    meinTable.Knife = "bf_knife"
+    meinTable.ArmorCharger = "bf_armorcharger"
 
     meinTable.PlayerModels = {
         ["css_riot"] = "models/player/riot.mdl",

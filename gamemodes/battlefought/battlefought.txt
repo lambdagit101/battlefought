@@ -9,7 +9,7 @@
 	{
 		1
 		{
-			"name"		"sv_randomboxes"
+			"name"		"bft_randomboxes"
 			"text"		"Random boxes"
 			"help"		"Disable if all supply box spawns are guaranteed"
 			"type"		"CheckBox"

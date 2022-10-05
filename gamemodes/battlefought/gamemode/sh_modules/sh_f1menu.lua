@@ -17,6 +17,12 @@ if SERVER then
 
         SetGlobalInt("battle-fought-votes", GetGlobalInt("battle-fought-votes") + (not ply:GetNWBool("battle-fought-voted") and 1 or -1))
         ply:SetNWBool("battle-fought-voted", not ply:GetNWBool("battle-fought-voted"))
+
+        if GetGlobalInt("battle-fought-votes") >= math.ceil(player.GetCount() / 2) then
+            SetGlobalFloat("battle-fought-startingin", CurTime() + 5)
+        else
+            SetGlobalFloat("battle-fought-startingin", 0)
+        end
     end)
 
     util.AddNetworkString("battle-fought-pmupdate")
@@ -28,6 +34,13 @@ if SERVER then
         end
 
         ply:SetNWString("battle-fought-pm", pmkey)
+    end)
+
+    hook.Add("Think", "battle-fought-voters", function()
+        if GetGlobalFloat("battle-fought-startingin") ~= 0 and GetGlobalFloat("battle-fought-startingin") < CurTime() then
+            SetGlobalFloat("battle-fought-startingin", 0)
+            GAMEMODE:StartRound()
+        end
     end)
 end
 
@@ -44,26 +57,31 @@ if CLIENT then
         local categories = vgui.Create("DPropertySheet", fullHelpUI)
         categories:Dock(FILL)
 
-        local vote = vgui.Create("DPanel", categories)
-        vote.Paint = nil
+        if not GetGlobalBool("battle-fought-mip") then
 
-        local voteText = vgui.Create("DLabel", vote)
-        voteText:Dock(FILL)
-        voteText:SetFont("Default")
-        voteText:SetText(language.GetPhrase("bftui-help-votetext"))
+            local vote = vgui.Create("DPanel", categories)
+            vote.Paint = nil
 
-        local voteButton = vgui.Create("DButton", vote)
-        voteButton:Dock(BOTTOM)
-        voteButton.Think = function(self)
-            local hasVoted = LocalPlayer():GetNWBool("battle-fought-voted")
-            --self:SetColor(Color((voted and 0 or 255), (voted and 255 or 0), 0))
-            self:SetText(string.format(language.GetPhrase("bftui-help-votebutton"), "(" .. GetGlobalInt("battle-fought-votes") .. "/" .. math.ceil(player.GetCount() / 2) .. ")"))
+            local voteText = vgui.Create("DLabel", vote)
+            voteText:Dock(FILL)
+            voteText:SetFont("Default")
+            voteText:SetText(language.GetPhrase("bftui-help-votetext"))
+
+            local voteButton = vgui.Create("DButton", vote)
+            voteButton:Dock(BOTTOM)
+            voteButton.Think = function(self)
+                local hasVoted = LocalPlayer():GetNWBool("battle-fought-voted")
+                --self:SetColor(Color((voted and 0 or 255), (voted and 255 or 0), 0))
+                self:SetText(string.format(language.GetPhrase("bftui-help-votebutton"), "(" .. GetGlobalInt("battle-fought-votes") .. "/" .. math.ceil(player.GetCount() / 2) .. ")"))
+            end
+            voteButton.DoClick = function(self)
+                if GetGlobalBool("battle-fought-mip") then return end
+                net.Start("battle-fought-vote")
+                net.SendToServer()
+            end
+            categories:AddSheet(language.GetPhrase("bftui-help-vote"), vote, "icon16/tick.png")
+
         end
-        voteButton.DoClick = function(self)
-            net.Start("battle-fought-vote")
-            net.SendToServer()
-        end
-        categories:AddSheet(language.GetPhrase("bftui-help-vote"), vote, "icon16/tick.png")
 
         local pm = vgui.Create("DScrollPanel", vote)
         pm.Paint = nil 

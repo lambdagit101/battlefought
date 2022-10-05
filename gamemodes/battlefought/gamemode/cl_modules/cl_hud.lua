@@ -277,9 +277,16 @@ function DrawWarmup()
     draw.SimpleText(phrase, "bfthud_center_blur", ScrW() / 2, 2 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt(), ColorAlpha(hudbgcolor, 200 * warmupmp), TEXT_ALIGN_CENTER)
     draw.SimpleText(phrase, "bfthud_center", ScrW() / 2, 0 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt(), ColorAlpha(hudtxcolor, 255 * warmupmp), TEXT_ALIGN_CENTER)
     draw.NoTexture()
+    
+    local voterPhrase = ""
+    if GetGlobalFloat("battle-fought-startingin") ~= 0 then
+        voterPhrase = string.format(language.GetPhrase("bftui-hud-start"), GetGlobalFloat("battle-fought-startingin") - CurTime())
+    else
+        voterPhrase = string.format(language.GetPhrase("bftui-hud-votes"), GetGlobalInt("battle-fought-votes"), math.ceil(player.GetCount() / 2))
+    end
 
-    draw.SimpleText(string.format(language.GetPhrase("bftui-hud-votes"), GetGlobalInt("battle-fought-votes"), math.ceil(player.GetCount() / 2)), "bfthud_name_blur", ScrW() / 2, 2 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt() + texty, ColorAlpha(hudbgcolor, 200 * warmupmp), TEXT_ALIGN_CENTER)
-    local _, secondy = draw.SimpleText(string.format(language.GetPhrase("bftui-hud-votes"), GetGlobalInt("battle-fought-votes"), math.ceil(player.GetCount() / 2)), "bfthud_name", ScrW() / 2, 0 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt() + texty, ColorAlpha(hudtxcolor, 255 * warmupmp), TEXT_ALIGN_CENTER)
+    draw.SimpleText(voterPhrase , "bfthud_name_blur", ScrW() / 2, 2 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt() + texty, ColorAlpha(hudbgcolor, 200 * warmupmp), TEXT_ALIGN_CENTER)
+    local _, secondy = draw.SimpleText(voterPhrase, "bfthud_name", ScrW() / 2, 0 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt() + texty, ColorAlpha(hudtxcolor, 255 * warmupmp), TEXT_ALIGN_CENTER)
 
     draw.SimpleText(string.format(language.GetPhrase("bftui-hud-voter"), input.LookupBinding("gm_showhelp") or "UNBOUND"), "bfthud_name_blur", ScrW() / 2,  secondy + 2 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt() + texty, ColorAlpha(hudbgcolor, 200 * warmupmp), TEXT_ALIGN_CENTER)
     draw.SimpleText(string.format(language.GetPhrase("bftui-hud-voter"), input.LookupBinding("gm_showhelp") or "UNBOUND"), "bfthud_name", ScrW() / 2, secondy + 0 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt() + texty, ColorAlpha(hudtxcolor, 255 * warmupmp), TEXT_ALIGN_CENTER)
@@ -321,9 +328,39 @@ hook.Add("HUDDrawTargetID", "battle-fought-targetid", function()
 	return false
 end)
 
+local closeWinnerAfter = 0
+local closeDelay = 0
+local winner = LocalPlayer()
+local winnerNick = ""
+local winnerMP = 0
+function DrawEndScreen()
+    winnerMP = Lerp(FrameTime() * 4, winnerMP, (closeWinnerAfter > CurTime() and 1 or 0))
+    surface.SetFont("bfthud_center")
+    local phrase = " " .. string.format(language.GetPhrase("bftui-hud-winner"), winnerNick) .. " "
+    local phraseX, phraseY = surface.GetTextSize(phrase)
+    surface.SetMaterial(displaygradient)
+    surface.SetDrawColor(0, 0, 0, 200 * winnerMP)
+    surface.DrawTexturedRect(ScrW() / 2 - phraseX / 2, 0 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt(), phraseX, phraseY * 2)
+    draw.SimpleText(phrase, "bfthud_center_blur", ScrW() / 2, 2 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt(), ColorAlpha(hudbgcolor, 200 * winnerMP), TEXT_ALIGN_CENTER)
+    draw.SimpleText(phrase, "bfthud_center", ScrW() / 2, 0 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt(), ColorAlpha(hudtxcolor, 255 * winnerMP), TEXT_ALIGN_CENTER)
+
+    draw.RoundedBox(0, ScrW() / 2 - (phraseX / 2) * math.TimeFraction(closeWinnerAfter - closeDelay, closeWinnerAfter, CurTime()), 0 + (ScrW() * 30/1920) + GetConVar("bfthud_yoffset"):GetInt() + phraseY, phraseX * math.TimeFraction(closeWinnerAfter - closeDelay, closeWinnerAfter, CurTime()), 3, ColorAlpha(hudhpcolor, 255 * winnerMP))
+    draw.NoTexture()
+end
+net.Receive("battle-fought-round-end", function(len)
+    winner = net.ReadEntity()
+    closeDelay = net.ReadFloat()
+    closeWinnerAfter = CurTime() + closeDelay
+    winnerNick = winner:Nick()
+end)
+
 hook.Add("HUDPaint", "battle-fought-hudpaint", function()
     local shouldHaltHud = hook.Run("HUDShouldDraw", "battle_fought_hud")
     if shouldHaltHud ~= nil and shouldHaltHud == false then return end
+
+    if GetGlobalBool("battle-fought-mip") then
+        DrawEndScreen()
+    end
 
     if not LocalPlayer():Alive() then 
         DrawSpectatorHUD()
