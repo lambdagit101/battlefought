@@ -53,7 +53,7 @@ SWEP.Recoil.SidewaysRecoil = {0.781785, -0.8795}
 
 SWEP.ADS = {}
 SWEP.ADS.FOVMP = 0.6585
-SWEP.ADS.Speed = 2.45
+SWEP.ADS.Speed = 8.45
 SWEP.ADS.Cone = 0.0157965
 SWEP.ADS.RecoilMP = 0.7084357895
 SWEP.ADS.Pos = Vector(-4.921, 0, 0.238)
