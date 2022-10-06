@@ -22,72 +22,72 @@ end)
     Duplicate fonts with blursize = 2 exist for extra font shadows
 ]]
 surface.CreateFont("bfthud_general", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (16/1920),
-    weight = 750,
+    weight = 500,
 })
 surface.CreateFont("bfthud_general_blur", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (16/1920),
-    weight = 750,
+    weight = 500,
     blursize = 2,
 })
 
 surface.CreateFont("bfthud_loadout", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (24/1920),
-    weight = 750,
+    weight = 500,
 })
 surface.CreateFont("bfthud_loadout_blur", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (24/1920),
-    weight = 750,
+    weight = 500,
     blursize = 2,
 })
 
 surface.CreateFont("bfthud_ammobig", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (50/1920),
     weight = 1000,
 })
 surface.CreateFont("bfthud_ammobig_blur", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (50/1920),
     weight = 1000,
     blursize = 2,
 })
 
 surface.CreateFont("bfthud_ammosmall", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (32/1920),
     weight = 500,
 })
 surface.CreateFont("bfthud_ammosmall_blur", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (32/1920),
     weight = 500,
     blursize = 2,
 })
 
 surface.CreateFont("bfthud_name", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (18/1920),
     weight = 500,
 })
 surface.CreateFont("bfthud_name_blur", {
-    font = "Roboto",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (18/1920),
     weight = 500,
     blursize = 2,
 })
 
 surface.CreateFont("bfthud_center", {
-    font = "Roboto Condensed",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (36/1920),
     weight = 500,
 })
 surface.CreateFont("bfthud_center_blur", {
-    font = "Roboto Condensed",
+    font = "Perfect DOS VGA 437",
     size = ScrW() * (36/1920),
     weight = 500,
     blursize = 2,
@@ -120,6 +120,12 @@ function DrawHealthDisplay()
 	surface.SetMaterial(displaygradient)
 	surface.DrawTexturedRect((ScrW() * 35/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey - (ScrH() * 30/1080) - GetConVar("bfthud_yoffset"):GetInt(), boxsizex * 1.45, boxsizey)
     draw.NoTexture()
+
+    if GAMEMODE:GetRoundState() == 2 then
+        DrawTextWithShadow(string.ToMinutesSeconds(GetGlobalFloat("battle-fought-timer") - (GetGlobalFloat("battle-fought-timer") ~= 0 and CurTime() or 0)), "bfthud_general", (ScrW() * 35/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey - (ScrH() * 30/1080) - GetConVar("bfthud_yoffset"):GetInt(), hudtxcolor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+    elseif GAMEMODE:GetRoundState() == 1 then
+        DrawTextWithShadow(string.ToMinutesSeconds(GetGlobalFloat("battle-fought-starttimer") - CurTime()), "bfthud_general", (ScrW() * 35/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey - (ScrH() * 30/1080) - GetConVar("bfthud_yoffset"):GetInt(), hudtxcolor, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+    end
 
     lowhpsine = math.sin(2 * math.pi * 1 * CurTime())
     draw.RoundedBox(0, (ScrW() * 65/1920) + GetConVar("bfthud_xoffset"):GetInt(), ScrH() - boxsizey / 2 - (ScrH() * 30/1080) - GetConVar("bfthud_yoffset"):GetInt() + 4, boxsizex * (0.735), ScreenScale(2), hudbgcolor)
@@ -267,7 +273,7 @@ end)
 local displaygradient = Material("vgui/gradient_down.vtf", "noclamp smooth")
 local warmupmp = 0
 function DrawWarmup()
-    warmupmp = Lerp(FrameTime() * 4, warmupmp, (GetGlobalBool("battle-fought-mip") and 0 or 1))
+    warmupmp = Lerp(FrameTime() * 4, warmupmp, (GAMEMODE:GetRoundState() ~= 0 and 0 or 1))
     surface.SetFont("bfthud_center")
     local phrase = " " .. language.GetPhrase("bftui-hud-warmup") .. " "
     local textx, texty = surface.GetTextSize(phrase)
@@ -300,7 +306,7 @@ function DrawSpectatorHUD()
 
     local spectatingTarget = IsValid(LocalPlayer():GetObserverTarget()) and LocalPlayer():GetObserverTarget() or LocalPlayer()
     DrawTextWithShadow(spectatingTarget:Nick() .. " (" .. spectatingTarget:Health() .. ")", "bfthud_name", ScrW() / 2, ScrH() - ScreenScale(50) / 2, hudtxcolor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    if GetGlobalBool("battle-fought-mip") then
+    if GAMEMODE:GetRoundState() == 2 then
         DrawTextWithShadow(language.GetPhrase("bftui-hud-progress"), "bfthud_name", ScrW() / 2, ScreenScale(50) / 2, hudtxcolor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
@@ -336,7 +342,7 @@ local winnerMP = 0
 function DrawEndScreen()
     winnerMP = Lerp(FrameTime() * 4, winnerMP, (closeWinnerAfter > CurTime() and 1 or 0))
     surface.SetFont("bfthud_center")
-    local phrase = " " .. string.format(language.GetPhrase("bftui-hud-winner"), winnerNick) .. " "
+    local phrase = " " .. string.format((IsValid(winnerNick) and language.GetPhrase("bftui-hud-winner") or language.GetPhrase("bftui-hud-contest")), winnerNick) .. " "
     local phraseX, phraseY = surface.GetTextSize(phrase)
     surface.SetMaterial(displaygradient)
     surface.SetDrawColor(0, 0, 0, 200 * winnerMP)
@@ -351,26 +357,32 @@ net.Receive("battle-fought-round-end", function(len)
     winner = net.ReadEntity()
     closeDelay = net.ReadFloat()
     closeWinnerAfter = CurTime() + closeDelay
+    if not IsValid(winner) then
+        winnerNick = NULL
+        return
+    end
     winnerNick = winner:Nick()
 end)
 
 hook.Add("HUDPaint", "battle-fought-hudpaint", function()
+    if not IsValid(LocalPlayer()) then return end
     local shouldHaltHud = hook.Run("HUDShouldDraw", "battle_fought_hud")
     if shouldHaltHud ~= nil and shouldHaltHud == false then return end
-
-    if GetGlobalBool("battle-fought-mip") then
-        DrawEndScreen()
-    end
 
     if not LocalPlayer():Alive() then 
         DrawSpectatorHUD()
         return 
     end
 
+    if GAMEMODE:GetRoundState() == 3 then
+        DrawEndScreen()
+    end
     if GetConVar("bfthud_attention"):GetBool() then
         DrawEffects()
     end
-    DrawWarmup()
+    if GAMEMODE:GetRoundState() == 0 then
+        DrawWarmup()
+    end
     DrawLoadout()
     DrawHealthDisplay()
     DrawAmmo()

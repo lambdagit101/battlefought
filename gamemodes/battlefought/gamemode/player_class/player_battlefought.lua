@@ -14,7 +14,8 @@ PLAYER.MaxArmor = 99
 PLAYER.TauntCam = TauntCamera()
 
 function PLAYER:Loadout()
-    self.Player:RemoveAllAmmo()
+    self.Player:StripAmmo()
+    self.Player:StripWeapons()
  	self.Player:GiveAmmo(1,	"armor_charge", true)
  	self.Player:Give(BF.ArmorCharger)
  	self.Player:Give(BF.Knife)
@@ -30,6 +31,10 @@ end
 
 function PLAYER:CalcView(view)
 	if self.TauntCam:CalcView(view, self.Player, self.Player:IsPlayingTaunt()) then return true end
+end
+
+function PLAYER:PlayerShouldTaunt(act)
+	if not self.Player:OnGround() then return false end
 end
 
 player_manager.RegisterClass("player_battlefought", PLAYER, "player_default")

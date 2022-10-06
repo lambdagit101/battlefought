@@ -20,10 +20,14 @@ hook.Add("PlayerCanHearPlayersVoice", "battle-fought-voice-chat", function(liste
 end)
 
 util.AddNetworkString("battle-fought-loadout")
-hook.Add("PlayerSpawn", "battle-fought-warmup-loadout", function(ply)
-    if not GetGlobalBool("battle-fought-mip") then
+function GM:PlayerLoadout(ply)
+    player_manager.RunClass(ply, "Loadout")
+
+    if GAMEMODE:GetRoundState() == 0 then
         local _, primaryWeapon = table.Random(BF.Primaries)
+        print(primaryWeapon)
         local _, secondaryWeapon = table.Random(BF.Secondaries)
+        print(secondaryWeapon)
 
         ply:Give(primaryWeapon, false)
         ply:GiveAmmo(ply:GetWeapon(primaryWeapon):Clip1() * 2, ply:GetWeapon(primaryWeapon):GetPrimaryAmmoType(), true)
@@ -34,17 +38,17 @@ hook.Add("PlayerSpawn", "battle-fought-warmup-loadout", function(ply)
         net.WriteString(primaryWeapon)
         net.WriteString(secondaryWeapon)
         net.Send(ply)
+    else
+        ply:Give(GetGlobalString("battle-fought-starterup"), false)
     end
-end)
 
-hook.Add("PlayerCanPickupWeapon", "noDoublePickup", function( ply, weapon )
-    if ( ply:HasWeapon( weapon:GetClass() ) ) then
-		return false
-	end
+	return true
+end
+hook.Add("PlayerSpawn", "battle-fought-loadout", function(ply)
 end)
 
 function GM:PlayerInitialSpawn(ply)
-    if GetGlobalBool("battle-fought-mip") then
+    if GAMEMODE:GetRoundState() == 2 or GAMEMODE:GetRoundState() == 3 then
         ply:KillSilent()
     end
 end
@@ -58,7 +62,7 @@ hook.Add("PlayerDeath", "battle-fought-deathcam", function(victim, inflictor, at
 end)
 
 function GM:PlayerDeathThink(ply)
-    if not GetGlobalBool("battle-fought-mip") then
+    if GAMEMODE:GetRoundState() == 0 then
         if ply.NextSpawnTime and ply.NextSpawnTime > CurTime() then return end
         ply:Spawn()
     else

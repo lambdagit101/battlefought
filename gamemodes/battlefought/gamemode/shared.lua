@@ -3,11 +3,13 @@ GM.Author = "lambups & juinc"
 GM.Email = "N/A"
 GM.Website = "N/A"
 
+AddCSLuaFile("sh_modules/sh_roundstates.lua")
 AddCSLuaFile("sh_modules/sh_defaulttable.lua")
 AddCSLuaFile("player_class/player_battlefought.lua")
 AddCSLuaFile("sh_modules/sh_handleround.lua")
 AddCSLuaFile("sh_modules/sh_f1menu.lua")
 
+include("sh_modules/sh_roundstates.lua")
 include("sh_modules/sh_defaulttable.lua")
 include("player_class/player_battlefought.lua")
 include("sh_modules/sh_handleround.lua")

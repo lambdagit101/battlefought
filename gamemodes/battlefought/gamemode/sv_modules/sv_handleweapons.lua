@@ -21,6 +21,8 @@ function GM:HasSecondary(ply)
 end
 
 hook.Add("PlayerCanPickupWeapon", "battle-fought-weapons", function(ply, weapon)
+    if GAMEMODE:GetRoundState() == 0 then return true end
+    if BF.Whitelist[weapon:GetClass()] then return true end
     if ply:HasWeapon(weapon:GetClass()) then return true end
     if weapon:GetClass() == BF.Knife or weapon:GetClass() == BF.ArmorCharger then return true end
 	if BF.Primaries[weapon:GetClass()] and not GAMEMODE:HasPrimary(ply) or BF.Secondaries[weapon:GetClass()] and not GAMEMODE:HasSecondary(ply) then return true end

@@ -57,7 +57,7 @@ if CLIENT then
         local categories = vgui.Create("DPropertySheet", fullHelpUI)
         categories:Dock(FILL)
 
-        if not GetGlobalBool("battle-fought-mip") then
+        if GAMEMODE:GetRoundState() == 0 then
 
             local vote = vgui.Create("DPanel", categories)
             vote.Paint = nil
@@ -69,13 +69,20 @@ if CLIENT then
 
             local voteButton = vgui.Create("DButton", vote)
             voteButton:Dock(BOTTOM)
+            voteButton:SetColor(Color(255, 255, 255))
             voteButton.Think = function(self)
                 local hasVoted = LocalPlayer():GetNWBool("battle-fought-voted")
                 --self:SetColor(Color((voted and 0 or 255), (voted and 255 or 0), 0))
                 self:SetText(string.format(language.GetPhrase("bftui-help-votebutton"), "(" .. GetGlobalInt("battle-fought-votes") .. "/" .. math.ceil(player.GetCount() / 2) .. ")"))
             end
+            voteButton.Paint = function(self, w, h)
+                local hasVoted = LocalPlayer():GetNWBool("battle-fought-voted")
+                local tempColor = Color((hasVoted and 0 or 200) + (self:IsHovered() and 25 or 0), (hasVoted and 200 or 0) + (self:IsHovered() and 25 or 0), self:IsHovered() and 25 or 0)
+                draw.RoundedBox(8, 0, 0, w, h, tempColor)
+            end
             voteButton.DoClick = function(self)
-                if GetGlobalBool("battle-fought-mip") then return end
+                if GAMEMODE:GetRoundState() ~= 0 then return end
+                surface.PlaySound("buttons/blip1.wav")
                 net.Start("battle-fought-vote")
                 net.SendToServer()
             end
@@ -101,5 +108,15 @@ if CLIENT then
         end
         categories:AddSheet(language.GetPhrase("bftui-help-pm"), pm, "icon16/computer.png")
 
+        local about = vgui.Create("DScrollPanel", vote)
+        about.Paint = function(self, w, h)
+            draw.RoundedBox(8, 0, 0, w, h, Color(0, 0, 0))
+        end
+
+        local aboutText = vgui.Create("RichText", about)
+        aboutText:Dock(FILL)
+        aboutText:InsertColorChange(255, 255, 255, 255)
+        aboutText:AppendText(language.GetPhrase("bftui-about-localization-fullcredits"))
+        categories:AddSheet(language.GetPhrase("bftui-help-about"), about, "icon16/user.png")
     end)
 end

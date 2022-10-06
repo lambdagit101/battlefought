@@ -2,34 +2,30 @@ BF = GM:ReturnBFTable()
 
 if SERVER then
     CreateConVar("bftserver_starttime", 5, FCVAR_ARCHIVE, "How much should every player wait in seconds before the round actually starts?", 0, 60)
+    CreateConVar("bftserver_roundtime", 5, FCVAR_ARCHIVE, "How much does a round last for in minutes? 0 meaning no time limit.", 0, 60)
     CreateConVar("bftserver_endtime", 10, FCVAR_ARCHIVE, "How much should every player wait in seconds before warm-up starts again?", 0, 60)
 
     util.AddNetworkString("battle-fought-round-start")
     function GM:StartRound()
-        SetGlobalBool("battle-fought-mip", true)
+        SetGlobalFloat("battle-fought-starttimer", CurTime() + GetConVar("bftserver_starttime"):GetInt())
+        GAMEMODE:ChangeRoundState(1)
         SetGlobalInt("battle-fought-votes", 0)
 
         game.CleanUpMap(false, {"env_fire", "entityflame", "_firesmoke"})
 
-        local startingWeapon = BF.StartingWeapons[math.random(#BF.StartingWeapons)]
+        SetGlobalString("battle-fought-starterup", BF.StartingWeapons[math.random(#BF.StartingWeapons)])
 
         for _, ply in ipairs(player.GetAll()) do
             ply:SetNWBool("battle-fought-voted", false)
             
             ply:Spawn()
-            ply:StripWeapons()
-            ply:StripAmmo()
-            player_manager.RunClass(ply, "Loadout")
+            GAMEMODE:PlayerLoadout(ply)
             ply:SetNWBool("battle-fought-freeze", true)
-
-            ply:Give(startingWeapon, false)
-            ply:GiveAmmo(ply:GetWeapon(startingWeapon):Clip1() * 2, ply:GetWeapon(startingWeapon):GetPrimaryAmmoType(), true)
-            ply:Give(BF.Knife)
         end
 
         net.Start("battle-fought-loadout")
-        net.WriteString("")
-        net.WriteString(startingWeapon)
+        net.WriteString(GetGlobalString("battle-fought-starterup"))
+        net.WriteString(BF.Knife)
         net.Broadcast()
         
         net.Start("battle-fought-round-start")
@@ -37,6 +33,8 @@ if SERVER then
         net.Broadcast()
 
         timer.Simple(GetConVar("bftserver_starttime"):GetInt(), function()
+            SetGlobalFloat("battle-fought-timer", (GetConVar("bftserver_roundtime"):GetFloat() ~= 0 and CurTime() + GetConVar("bftserver_roundtime"):GetFloat() * 60 or 0))
+            GAMEMODE:ChangeRoundState(2)
             for _, ply in ipairs(player.GetAll()) do
                 ply:SetNWBool("battle-fought-freeze", false)
             end
@@ -65,13 +63,14 @@ if SERVER then
             ply:SetNWBool("battle-fought-freeze", true)
         end
 
+        GAMEMODE:ChangeRoundState(3)
         net.Start("battle-fought-round-end")
         net.WriteEntity(winner)
         net.WriteFloat(GetConVar("bftserver_endtime"):GetInt())
         net.Broadcast()
 
         timer.Simple(GetConVar("bftserver_endtime"):GetInt(), function()
-            SetGlobalBool("battle-fought-mip", false)
+            GAMEMODE:ChangeRoundState(0)
 
             game.CleanUpMap(false, {"env_fire", "entityflame", "_firesmoke"})
 
@@ -85,13 +84,24 @@ if SERVER then
         end)
     end
 
+    hook.Add("Think", "battle-fought-round-timer", function()
+        if GAMEMODE:GetRoundState() ~= 2 then return end
+
+        if GAMEMODE:GetRoundState() == 2 and GetGlobalFloat("battle-fought-timer") < CurTime() then
+            GAMEMODE:EndRound(NULL)
+        end
+    end)
+
     hook.Add("PlayerDeath", "battle-fought-round-death", function(victim, inflictor, attacker)
-        if not GetGlobalBool("battle-fought-mip") then return end
+        if GAMEMODE:GetRoundState() ~= 2 then return end
+        if victim:GetNWBool("battle-fought-freeze", "stinky poopoo egg") == "stinky poopoo egg" then return end
 
         local amount, lastplayers = GAMEMODE:AlivePlayers()
 
         if amount == 1 then
             GAMEMODE:EndRound(lastplayers[1])
+        elseif amount == 0 then
+            GAMEMODE:EndRound(NULL)
         end
     end)
 end

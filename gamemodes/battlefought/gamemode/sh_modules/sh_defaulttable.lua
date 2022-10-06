@@ -82,6 +82,10 @@ function GM:GenerateDefaultBFTable()
         ["bf_brock13"] = true
     }
 
+    meinTable.Whitelist = {
+        ["aact_weapact"] = true
+    }
+
     meinTable.Knife = "bf_knife"
     meinTable.ArmorCharger = "bf_armorcharger"
 
