@@ -9,7 +9,7 @@ end
 SWEP.BoxTable = {}
 function SWEP:SecondaryAttack()
     if SERVER then
-        file.Write("bf_" .. game.GetMap() .. ".json", util.TableToJSON(self.BoxTable))
+        file.Write("bf_" .. game.GetMap() .. ".json", util.TableToJSON(self.BoxTable, true))
         self:GetOwner():ChatPrint("Saved the file as bf_" .. game.GetMap() .. ".json to the server's data folder!")
     end
 end

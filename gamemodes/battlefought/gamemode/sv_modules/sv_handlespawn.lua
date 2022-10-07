@@ -19,15 +19,23 @@ hook.Add("PlayerCanHearPlayersVoice", "battle-fought-voice-chat", function(liste
 	end
 end)
 
+hook.Add("PlayerSelectSpawn", "battle-fought-better-spawns", function(ply)
+	local spawns = {}
+    table.Add(spawns, ents.FindByClass("info_player_start"))
+    table.Add(spawns, ents.FindByClass("info_player_deathmatch"))
+    table.Add(spawns, ents.FindByClass("info_deathmatch_spawn"))
+	local random_entry = math.random(#spawns)
+
+	return spawns[random_entry]
+end)
+
 util.AddNetworkString("battle-fought-loadout")
 function GM:PlayerLoadout(ply)
     player_manager.RunClass(ply, "Loadout")
 
     if GAMEMODE:GetRoundState() == 0 then
         local _, primaryWeapon = table.Random(BF.Primaries)
-        print(primaryWeapon)
         local _, secondaryWeapon = table.Random(BF.Secondaries)
-        print(secondaryWeapon)
 
         ply:Give(primaryWeapon, false)
         ply:GiveAmmo(ply:GetWeapon(primaryWeapon):Clip1() * 2, ply:GetWeapon(primaryWeapon):GetPrimaryAmmoType(), true)

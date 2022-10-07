@@ -260,7 +260,6 @@ function DrawLoadout()
 
     surface.SetDrawColor(200, 200, 200, killalpha)
     surface.DrawLine(originx, secondaryy, originx + math.max(math.max(pwpnamesizex, pwpkillsizex), math.max(swpnamesizex, swpkillsizex)) * (killalpha / 255), secondaryy)
-
 end
 
 net.Receive("battle-fought-loadout", function(len)
@@ -326,9 +325,10 @@ hook.Add("HUDDrawTargetID", "battle-fought-targetid", function()
 		return false
 	end
 
-    coords = ent:GetShootPos():ToScreen()
-    coords.y = coords.y + 5
-    draw.SimpleText(ent:Nick(), "bfthud_general", coords.x, coords.y + 2, hudbgcolor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    local tempVector = ent:GetShootPos()
+    tempVector:Add(Vector(0, 0, 14))
+    coords = tempVector:ToScreen()
+    draw.SimpleText(ent:Nick(), "bfthud_general_blur", coords.x, coords.y + 2, hudbgcolor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     draw.SimpleText(ent:Nick(), "bfthud_general", coords.x, coords.y, hudtxcolor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 	return false
@@ -342,7 +342,12 @@ local winnerMP = 0
 function DrawEndScreen()
     winnerMP = Lerp(FrameTime() * 4, winnerMP, (closeWinnerAfter > CurTime() and 1 or 0))
     surface.SetFont("bfthud_center")
-    local phrase = " " .. string.format((IsValid(winnerNick) and language.GetPhrase("bftui-hud-winner") or language.GetPhrase("bftui-hud-contest")), winnerNick) .. " "
+    local phrase = ""
+    if winnerNick == NULL then
+        phrase = " " .. language.GetPhrase("bftui-hud-contest") .. " "
+    else
+        phrase = " " .. string.format(language.GetPhrase("bftui-hud-winner"), winnerNick) .. " "
+    end
     local phraseX, phraseY = surface.GetTextSize(phrase)
     surface.SetMaterial(displaygradient)
     surface.SetDrawColor(0, 0, 0, 200 * winnerMP)
@@ -355,7 +360,9 @@ function DrawEndScreen()
 end
 net.Receive("battle-fought-round-end", function(len)
     winner = net.ReadEntity()
+    print(winner)
     closeDelay = net.ReadFloat()
+    print(closeDelay)
     closeWinnerAfter = CurTime() + closeDelay
     if not IsValid(winner) then
         winnerNick = NULL
@@ -373,12 +380,11 @@ hook.Add("HUDPaint", "battle-fought-hudpaint", function()
         DrawSpectatorHUD()
         return 
     end
-
-    if GAMEMODE:GetRoundState() == 3 then
-        DrawEndScreen()
-    end
     if GetConVar("bfthud_attention"):GetBool() then
         DrawEffects()
+    end
+    if GAMEMODE:GetRoundState() == 3 then
+        DrawEndScreen()
     end
     if GAMEMODE:GetRoundState() == 0 then
         DrawWarmup()

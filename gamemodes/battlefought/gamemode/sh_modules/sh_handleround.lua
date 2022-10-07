@@ -7,6 +7,8 @@ if SERVER then
 
     util.AddNetworkString("battle-fought-round-start")
     function GM:StartRound()
+        hook.Run("battle-fought-rounddelay", GetConVar("bftserver_starttime"):GetInt())
+
         SetGlobalFloat("battle-fought-starttimer", CurTime() + GetConVar("bftserver_starttime"):GetInt())
         GAMEMODE:ChangeRoundState(1)
         SetGlobalInt("battle-fought-votes", 0)
@@ -17,6 +19,8 @@ if SERVER then
 
         for _, ply in ipairs(player.GetAll()) do
             ply:SetNWBool("battle-fought-voted", false)
+            ply:SetFrags(0)
+            ply:SetDeaths(0)
             
             ply:Spawn()
             GAMEMODE:PlayerLoadout(ply)
@@ -33,6 +37,7 @@ if SERVER then
         net.Broadcast()
 
         timer.Simple(GetConVar("bftserver_starttime"):GetInt(), function()
+            hook.Run("battle-fought-roundbegin")
             SetGlobalFloat("battle-fought-timer", (GetConVar("bftserver_roundtime"):GetFloat() ~= 0 and CurTime() + GetConVar("bftserver_roundtime"):GetFloat() * 60 or 0))
             GAMEMODE:ChangeRoundState(2)
             for _, ply in ipairs(player.GetAll()) do
@@ -57,8 +62,8 @@ if SERVER then
 
     util.AddNetworkString("battle-fought-round-end")
     function GM:EndRound(winner)
-        winner = winner or NULL
-        
+        hook.Run("battle-fought-roundend", winner)
+
         for _, ply in ipairs(player.GetAll()) do
             ply:SetNWBool("battle-fought-freeze", true)
         end
@@ -75,6 +80,8 @@ if SERVER then
             game.CleanUpMap(false, {"env_fire", "entityflame", "_firesmoke"})
 
             for _, ply in ipairs(player.GetAll()) do
+                ply:SetFrags(0)
+                ply:SetDeaths(0)
                 ply:SetNWBool("battle-fought-freeze", false)
                 ply:KillSilent()
                 ply:StripAmmo()
@@ -97,6 +104,8 @@ if SERVER then
         if victim:GetNWBool("battle-fought-freeze", "stinky poopoo egg") == "stinky poopoo egg" then return end
 
         local amount, lastplayers = GAMEMODE:AlivePlayers()
+        print(amount)
+        PrintTable(lastplayers)
 
         if amount == 1 then
             GAMEMODE:EndRound(lastplayers[1])

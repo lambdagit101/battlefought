@@ -45,7 +45,17 @@ if SERVER then
 end
 
 if CLIENT then
+    surface.CreateFont("bfthud_console", {
+        font = "Perfect DOS VGA 437",
+        size = 17,
+        weight = 500,
+    })
+
     net.Receive("battle-fought-f1", function(len)
+        local shouldOpenMenu = hook.Run("battle-fought-f1open")
+
+        if shouldOpenMenu ~= nil and shouldOpenMenu == false then return end
+
         local fullHelpUI = vgui.Create("DFrame")
         fullHelpUI:SetSize(640, 480)
         fullHelpUI:Center()
@@ -108,13 +118,17 @@ if CLIENT then
         end
         categories:AddSheet(language.GetPhrase("bftui-help-pm"), pm, "icon16/computer.png")
 
-        local about = vgui.Create("DScrollPanel", vote)
+        local about = vgui.Create("DPanel", vote)
         about.Paint = function(self, w, h)
             draw.RoundedBox(8, 0, 0, w, h, Color(0, 0, 0))
         end
 
         local aboutText = vgui.Create("RichText", about)
         aboutText:Dock(FILL)
+        aboutText.PerformLayout = function(self)
+            self:SetFontInternal("bfthud_console")
+            self:SetFGColor(color_white)
+        end
         aboutText:InsertColorChange(255, 255, 255, 255)
         aboutText:AppendText(language.GetPhrase("bftui-about-localization-fullcredits"))
         categories:AddSheet(language.GetPhrase("bftui-help-about"), about, "icon16/user.png")
