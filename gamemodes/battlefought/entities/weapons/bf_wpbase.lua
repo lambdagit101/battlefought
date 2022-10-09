@@ -128,7 +128,6 @@ function SWEP:SetupDataTables()
     self:NetworkVar("Bool", 1, "Reloading")
     self:NetworkVar("Float", 0, "ReloadTime")
 	self:NetworkVar("Float", 1, "NextIdle")
-    self:NetworkVar("Float", 2, "LastPrimaryFire")
 end
 
 function SWEP:Initialize()
@@ -138,7 +137,6 @@ function SWEP:Initialize()
 	self:SetNextIdle(0)
     self:SetHoldType(self.HoldType)
     self:SetDeploySpeed(self.LeEquip.SpeedMP)
-    self:SetLastPrimaryFire(0)
 
     if CLIENT then
         killicon.AddFont(self:GetClass(), self.KillIconFont, self.KillIcon, self.KillIconColor)
@@ -368,9 +366,6 @@ end
 function SWEP:PrimaryAttack()
     if self:GetOwner():WaterLevel() == 3 or self:IsSprinting() or self:GetReloading() or not self:CanPrimaryAttack() then return end
     self:SetNextPrimaryFire(CurTime() + (60 / self.Bullet.RPM))
-    if IsFirstTimePredicted() then
-        self:SetLastPrimaryFire(CurTime())
-    end
 
     if (not self:GetAimingDownSights() or not self.Crosshair.HideADS) or self.ADS.Scope or self.ADS.Anim then
         self:SendWeaponAnim(self:Clip1() - self.Bullet.Amount <= 0 and self.Anim.ShootEmpty or self.Anim.Shoot)
@@ -459,11 +454,11 @@ function SWEP:AddOffset()
     local basevector = Vector(0, 0, 0)
     local baseangle = Angle(0, 0, 0)
 
-    if self:GetLastPrimaryFire() ~= self.LastPrimaryFire and self.Crosshair.HideADS and self:GetAimingDownSights() and not self.ADS.Scope then
+    if self:GetNextPrimaryFire() ~= self.LastPrimaryFire and self.Crosshair.HideADS and self:GetAimingDownSights() and not self.ADS.Scope then
         basevector = basevector + self.ADS.VectorBoost
         baseangle = baseangle + self.ADS.AngleBoost
     end
-    self.LastPrimaryFire = self:GetLastPrimaryFire()
+    self.LastPrimaryFire = self:GetNextPrimaryFire()
 
     return basevector, baseangle
 end
@@ -541,10 +536,10 @@ SWEP.FiredAShot = 0
 function SWEP:AddCrosshairSpread()
     local bread = 0
 
-    if self.FiredAShot ~= self:GetLastPrimaryFire() then
+    if self.FiredAShot ~= self:GetNextPrimaryFire() then
         bread = bread + 25
     end
-    self.FiredAShot = self:GetLastPrimaryFire()
+    self.FiredAShot = self:GetNextPrimaryFire()
 
     return bread
 end
