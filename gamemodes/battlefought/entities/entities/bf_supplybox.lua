@@ -22,6 +22,17 @@ function ENT:Use(ply)
         ply:Give("item_healthvial")
         ply:GiveAmmo(math.random(0, 1), "armor_charge", false)
     end
+
+    local bueno, primary = GAMEMODE:HasPrimary(ply)
+    local buenodos, secondary = GAMEMODE:HasSecondary(ply)
+
+    if bueno then
+        ply:GiveAmmo(ply:GetWeapon(primary):GetMaxClip1(), ply:GetWeapon(primary):GetPrimaryAmmoType(), false)
+    end
+
+    if buenodos then
+        ply:GiveAmmo(ply:GetWeapon(secondary):GetMaxClip1(), ply:GetWeapon(secondary):GetPrimaryAmmoType(), false)
+    end
     
     local weapon, rarity = GAMEMODE:ReturnRandomWeapon()
 
