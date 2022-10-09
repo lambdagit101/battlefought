@@ -52,8 +52,6 @@ function GM:PlayerLoadout(ply)
 
 	return true
 end
-hook.Add("PlayerSpawn", "battle-fought-loadout", function(ply)
-end)
 
 function GM:PlayerInitialSpawn(ply)
     if GAMEMODE:GetRoundState() == 2 or GAMEMODE:GetRoundState() == 3 then
@@ -62,16 +60,22 @@ function GM:PlayerInitialSpawn(ply)
 end
 
 hook.Add("PlayerDeath", "battle-fought-deathcam", function(victim, inflictor, attacker)
-    victim:Spectate(OBS_MODE_DEATHCAM)
-    victim:SpectateEntity(victim)
+    if attacker:IsWorld() or not IsValid(attacker) or victim == attacker or not attacker:IsPlayer() then
+        victim:Spectate(OBS_MODE_DEATHCAM)
+        victim:SpectateEntity(victim)
+    else
+        victim:Spectate(OBS_MODE_FREEZECAM)
+        victim:SpectateEntity(attacker)
+    end
+
     victim.SpectatedPlayer = 1
     victim.SpectateMode = false
     victim.DeathSpectating = false
 end)
 
 function GM:PlayerDeathThink(ply)
-    if GAMEMODE:GetRoundState() == 0 then
-        if ply.NextSpawnTime and ply.NextSpawnTime > CurTime() then return end
+    if GAMEMODE:GetRoundState() ~= 2 and GAMEMODE:GetRoundState() ~= 3 then
+        if ply.NextSpawnTime and ply.NextSpawnTime > CurTime() and GAMEMODE:GetRoundState() == 0 then return end
         ply:Spawn()
     else
         if ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_ATTACK2) or ply:KeyPressed(IN_JUMP) then
