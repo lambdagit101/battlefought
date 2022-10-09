@@ -49,8 +49,9 @@ if SERVER then
     function GM:AlivePlayers()
         local i = 0
         local alivePlayers = {}
+        local plyTable = player.GetAll()
 
-        for _, ply in ipairs(player.GetAll()) do
+        for _, ply in ipairs(plyTable) do
             if ply:Alive() then 
                 i = i + 1 
                 alivePlayers[#alivePlayers + 1] = ply
@@ -104,14 +105,24 @@ if SERVER then
         if victim:GetNWBool("battle-fought-freeze", "stinky poopoo egg") == "stinky poopoo egg" then return end
 
         local amount, lastplayers = GAMEMODE:AlivePlayers()
-        print(amount)
-        PrintTable(lastplayers)
 
         if amount == 1 then
             GAMEMODE:EndRound(lastplayers[1])
         elseif amount == 0 then
             GAMEMODE:EndRound(NULL)
         end
+    end)
+
+    hook.Add("PlayerDisconnected", "battle-fought-disconnect", function(ply)
+        if GetGlobalInt("battle-fought-votes") >= math.ceil((player.GetCount() - 1) / 2) then
+            SetGlobalFloat("battle-fought-startingin", CurTime() + 5)
+        else
+            SetGlobalFloat("battle-fought-startingin", 0)
+        end
+
+        if GAMEMODE:GetRoundState() ~= 2 then return end
+
+        ply:Kill()
     end)
 end
 
