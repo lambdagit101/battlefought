@@ -6,49 +6,13 @@ end
 function GM:GenerateDefaultBFTable()
     local meinTable = {}
 
-    meinTable.StartingWeapons = {
-        "bf_p337",
-        "bf_sixeight",
-        "bf_brock13",
-        "bf_match45",
-        "bf_matchtactical",
-        "bf_goldbeagle"
-    }
+    meinTable.StartingWeapons = {"bf_p337", "bf_sixeight", "bf_brock13", "bf_match45", "bf_matchtactical", "bf_goldbeagle"}
 
-    meinTable.CommonWeapons = {
-        "bf_sixeight",
-        "bf_match45",
-        "bf_matchtactical",
-        "bf_gewehr3",
-        "bf_blitzer770",
-        "bf_bigmac12",
-        "bf_mp5",
-        "bf_marksmanc"
-    }
-    
-    meinTable.RareWeapons = {
-        "bf_goldbeagle",
-        "bf_kzmrodyna",
-        "bf_monsieur",
-        "bf_p337",
-        "bf_marksmanp",
-        "bf_mp7",
-        "bf_ump45",
-        "bf_futaba90",
-        "bf_ava4",
-        "bf_cigma480",
-        "bf_drp",
-        "bf_brock13",
-    }
+    meinTable.CommonWeapons = {"bf_sixeight", "bf_match45", "bf_matchtactical", "bf_gewehr3", "bf_blitzer770", "bf_bigmac12", "bf_mp5", "bf_marksmanc"}
 
-    meinTable.EpiqueWeapons = {
-        "bf_cigma690",
-        "bf_bullpup",
-        "bf_blitzer772",
-        "bf_m789",
-        "bf_prototypevg",
-        "bf_pdfattacker",
-    }
+    meinTable.RareWeapons = {"bf_goldbeagle", "bf_kzmrodyna", "bf_monsieur", "bf_p337", "bf_marksmanp", "bf_mp7", "bf_ump45", "bf_futaba90", "bf_ava4", "bf_cigma480", "bf_drp", "bf_brock13",}
+
+    meinTable.EpiqueWeapons = {"bf_cigma690", "bf_bullpup", "bf_blitzer772", "bf_m789", "bf_prototypevg", "bf_pdfattacker",}
 
     meinTable.Primaries = {
         ["bf_cigma690"] = true,
@@ -131,7 +95,7 @@ function GM:GenerateDefaultBFTable()
     }
 
     meinTable.DefaultPM = "dod_american"
-    
+
     return meinTable
 end
 
@@ -148,6 +112,7 @@ end
 function GM:ReturnRandomWeapon()
     local weapon = math.random(1, 3)
     local rarity = weapon
+
     if weapon == 1 then
         weapon = BF.CommonWeapons
     elseif weapon == 2 then

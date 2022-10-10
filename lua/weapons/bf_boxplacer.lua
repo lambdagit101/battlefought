@@ -1,6 +1,6 @@
 SWEP.PrintName = "battle_fought_boxer_"
 SWEP.AdminOnly = true
-SWEP.Spawnable = true 
+SWEP.Spawnable = true
 
 function SWEP:Initialize()
     util.PrecacheModel("models/Items/item_item_crate.mdl")

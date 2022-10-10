@@ -1,5 +1,4 @@
 AddCSLuaFile()
-
 ENT.Type = "anim"
 ENT.Base = "base_anim"
 
@@ -11,7 +10,6 @@ function ENT:Initialize()
     self:SetModel("models/Items/item_item_crate.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_CUSTOM)
-
     self:PhysWake()
 end
 
@@ -33,10 +31,10 @@ function ENT:Use(ply)
     if buenodos then
         ply:GiveAmmo(ply:GetWeapon(secondary):GetMaxClip1(), ply:GetWeapon(secondary):GetPrimaryAmmoType(), false)
     end
-    
-    local weapon, rarity = GAMEMODE:ReturnRandomWeapon()
 
+    local weapon, rarity = GAMEMODE:ReturnRandomWeapon()
     self:EmitSound("items/ammo_pickup.wav")
+
     if rarity == 1 then
         self:EmitSound("items/ammocrate_close.wav")
     elseif rarity == 2 then

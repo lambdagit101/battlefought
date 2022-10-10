@@ -14,44 +14,18 @@ function GM:PlayerDeathSound(ply)
 end
 
 hook.Add("PlayerCanHearPlayersVoice", "battle-fought-voice-chat", function(listener, talker)
-    if not talker:Alive() then
-		return false
-	end
+    if not talker:Alive() then return false end
 end)
 
 hook.Add("PlayerSelectSpawn", "battle-fought-better-spawns", function(ply)
-	local spawns = {}
+    local spawns = {}
     table.Add(spawns, ents.FindByClass("info_player_start"))
     table.Add(spawns, ents.FindByClass("info_player_deathmatch"))
     table.Add(spawns, ents.FindByClass("info_deathmatch_spawn"))
-	local random_entry = math.random(#spawns)
+    local random_entry = math.random(#spawns)
 
-	return spawns[random_entry]
+    return spawns[random_entry]
 end)
-
-util.AddNetworkString("battle-fought-loadout")
-function GM:PlayerLoadout(ply)
-    player_manager.RunClass(ply, "Loadout")
-
-    if GAMEMODE:GetRoundState() == 0 then
-        local _, primaryWeapon = table.Random(BF.Primaries)
-        local _, secondaryWeapon = table.Random(BF.Secondaries)
-
-        ply:Give(primaryWeapon, false)
-        ply:GiveAmmo(ply:GetWeapon(primaryWeapon):Clip1() * 2, ply:GetWeapon(primaryWeapon):GetPrimaryAmmoType(), true)
-        ply:Give(secondaryWeapon, false)
-        ply:GiveAmmo(ply:GetWeapon(secondaryWeapon):Clip1() * 2, ply:GetWeapon(secondaryWeapon):GetPrimaryAmmoType(), true)
-
-        net.Start("battle-fought-loadout")
-        net.WriteString(primaryWeapon)
-        net.WriteString(secondaryWeapon)
-        net.Send(ply)
-    else
-        ply:Give(GetGlobalString("battle-fought-starterup"), false)
-    end
-
-	return true
-end
 
 function GM:PlayerInitialSpawn(ply)
     if GAMEMODE:GetRoundState() == 2 or GAMEMODE:GetRoundState() == 3 then
@@ -91,17 +65,21 @@ hook.Add("KeyPress", "battle-fought-death-spectate", function(ply, key)
 
     if key == IN_ATTACK then
         ply.SpectatedPlayer = ply.SpectatedPlayer + 1
+
         if ply.SpectatedPlayer > player.GetCount() then
             ply.SpectatedPlayer = 1
         end
+
         ply:SpectateEntity(player.GetAll()[ply.SpectatedPlayer])
     end
-    
+
     if key == IN_ATTACK2 then
         ply.SpectatedPlayer = ply.SpectatedPlayer - 1
+
         if ply.SpectatedPlayer == 0 then
             ply.SpectatedPlayer = player.GetCount()
         end
+
         ply:SpectateEntity(player.GetAll()[ply.SpectatedPlayer])
     end
 

@@ -4,11 +4,10 @@ if SERVER then
     CreateConVar("bftserver_starttime", 5, FCVAR_ARCHIVE, "How much should every player wait in seconds before the round actually starts?", 0, 60)
     CreateConVar("bftserver_roundtime", 5, FCVAR_ARCHIVE, "How much does a round last for in minutes? 0 meaning no time limit.", 0, 60)
     CreateConVar("bftserver_endtime", 10, FCVAR_ARCHIVE, "How much should every player wait in seconds before warm-up starts again?", 0, 60)
-
     util.AddNetworkString("battle-fought-round-start")
+
     function GM:StartRound()
         hook.Run("battle-fought-rounddelay", GetConVar("bftserver_starttime"):GetInt())
-
         SetGlobalFloat("battle-fought-starttimer", CurTime() + GetConVar("bftserver_starttime"):GetInt())
         GAMEMODE:ChangeRoundState(1)
         SetGlobalInt("battle-fought-votes", 0)
@@ -21,7 +20,6 @@ if SERVER then
             ply:SetNWBool("battle-fought-voted", false)
             ply:SetFrags(0)
             ply:SetDeaths(0)
-            
             ply:Spawn()
             GAMEMODE:PlayerLoadout(ply)
             ply:SetNWBool("battle-fought-freeze", true)
@@ -31,15 +29,15 @@ if SERVER then
         net.WriteString(GetGlobalString("battle-fought-starterup"))
         net.WriteString(BF.Knife)
         net.Broadcast()
-        
         net.Start("battle-fought-round-start")
         net.WriteFloat(GetConVar("bftserver_starttime"):GetInt())
         net.Broadcast()
 
         timer.Simple(GetConVar("bftserver_starttime"):GetInt(), function()
             hook.Run("battle-fought-roundbegin")
-            SetGlobalFloat("battle-fought-timer", (GetConVar("bftserver_roundtime"):GetFloat() ~= 0 and CurTime() + GetConVar("bftserver_roundtime"):GetFloat() * 60 or 0))
+            SetGlobalFloat("battle-fought-timer", GetConVar("bftserver_roundtime"):GetFloat() ~= 0 and CurTime() + GetConVar("bftserver_roundtime"):GetFloat() * 60 or 0)
             GAMEMODE:ChangeRoundState(2)
+
             for _, ply in ipairs(player.GetAll()) do
                 ply:SetNWBool("battle-fought-freeze", false)
             end
@@ -52,8 +50,8 @@ if SERVER then
         local plyTable = player.GetAll()
 
         for _, ply in ipairs(plyTable) do
-            if ply:Alive() then 
-                i = i + 1 
+            if ply:Alive() then
+                i = i + 1
                 alivePlayers[#alivePlayers + 1] = ply
             end
         end
@@ -62,6 +60,7 @@ if SERVER then
     end
 
     util.AddNetworkString("battle-fought-round-end")
+
     function GM:EndRound(winner)
         hook.Run("battle-fought-roundend", winner)
 
@@ -103,7 +102,6 @@ if SERVER then
     hook.Add("PlayerDeath", "battle-fought-round-death", function(victim, inflictor, attacker)
         if GAMEMODE:GetRoundState() ~= 2 then return end
         if victim:GetNWBool("battle-fought-freeze", "stinky poopoo egg") == "stinky poopoo egg" then return end
-
         local amount, lastplayers = GAMEMODE:AlivePlayers()
 
         if amount == 1 then
@@ -121,7 +119,6 @@ if SERVER then
         end
 
         if GAMEMODE:GetRoundState() ~= 2 then return end
-
         ply:Kill()
     end)
 end
