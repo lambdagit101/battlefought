@@ -88,6 +88,7 @@ SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
 SWEP.Rload = {}
 SWEP.Rload.Shells = true
 SWEP.Rload.ShellInserted = 1
+SWEP.Rload.Sound = Sound("Weapon_Shotgun.Reload")
 
 SWEP.Crosshair = {}
 SWEP.Crosshair.TShape = true
