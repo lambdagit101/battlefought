@@ -98,9 +98,9 @@ if CLIENT then
 
         for k, v in SortedPairs(BF.PlayerModels) do
             local pmIcon = pmSelector:Add("SpawnIcon")
-            pmIco:SetModel(v)
-            pmIco:SetTooltip(k)
-            pmIco:SetSize(64, 64)
+            pmIcon:SetModel(v)
+            pmIcon:SetTooltip(k)
+            pmIcon:SetSize(64, 64)
 
             pmIcon.DoClick = function(self)
                 net.Start("battle-fought-pmupdate")
