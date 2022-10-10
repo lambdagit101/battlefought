@@ -9,6 +9,9 @@ SWEP.ViewModel = "models/weapons/v_smg1.mdl"
 SWEP.WorldModel = "models/weapons/w_smg1.mdl"
 SWEP.ViewModelFOV = 60
 
+SWEP.BobScale = 0.1
+SWEP.SwayScale = 0.1
+
 SWEP.KillIcon = "x"
 SWEP.KillIconFont = "bfthud-csskillicons"
 SWEP.KillIconColor = Color(255, 80, 0, 200)
@@ -285,9 +288,6 @@ function SWEP:Think()
     self:ReloadThink()
     self:IronsightsThink()
     self:IdleThink()
-
-    self.BobScale = (self:GetAimingDownSights() and 0.1 or 1)
-    self.SwayScale = (self:GetAimingDownSights() and 0.1 or 1)
 end
 
 function SWEP:Holster()
