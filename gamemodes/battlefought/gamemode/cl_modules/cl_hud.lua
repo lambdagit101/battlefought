@@ -273,13 +273,13 @@ net.Receive("battle-fought-loadout", function(len)
 end)
 
 local warmupmp = 0
-
+local downgradient = Material("vgui/gradient_down.vtf", "noclamp smooth")
 function DrawWarmup()
     warmupmp = Lerp(FrameTime() * 4, warmupmp, GAMEMODE:GetRoundState() ~= 0 and 0 or 1)
     surface.SetFont("bfthud_center")
     local phrase = " " .. language.GetPhrase("bftui-hud-warmup") .. " "
     local textx, texty = surface.GetTextSize(phrase)
-    surface.SetMaterial(displaygradient)
+    surface.SetMaterial(downgradient)
     surface.SetDrawColor(0, 0, 0, 200 * warmupmp)
     surface.DrawTexturedRect(ScrW() / 2 - textx, 0 + (ScrW() * 30 / 1920) + GetConVar("bfthud_yoffset"):GetInt(), textx * 2, texty * 1.5)
     draw.SimpleText(phrase, "bfthud_center_blur", ScrW() / 2, 2 + (ScrW() * 30 / 1920) + GetConVar("bfthud_yoffset"):GetInt(), ColorAlpha(hudbgcolor, 200 * warmupmp), TEXT_ALIGN_CENTER)
