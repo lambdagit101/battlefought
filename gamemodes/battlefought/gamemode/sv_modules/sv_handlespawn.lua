@@ -14,7 +14,7 @@ function GM:PlayerDeathSound(ply)
 end
 
 hook.Add("PlayerCanHearPlayersVoice", "battle-fought-voice-chat", function(listener, talker)
-    if not talker:Alive() then return false end
+    if not talker:Alive() and listener:Alive() and GAMEMODE:GetRoundState() == 2 then return false end
 end)
 
 hook.Add("PlayerSelectSpawn", "battle-fought-better-spawns", function(ply)
