@@ -242,6 +242,9 @@ function SWEP:ReloadThink()
                 self:SendWeaponAnim(self.Anim.ShellReloadInsert)
                 self:QueueIdle()
                 self:SetReloadTime(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
+                if self.Rload.Sound then
+                    self:EmitSound(self.Rload.Sound)
+                end
             else
                 self:SetReloading(false)
         
