@@ -356,7 +356,7 @@ function DrawEndScreen()
     end
 
     local phraseX, phraseY = surface.GetTextSize(phrase)
-    surface.SetMaterial(displaygradient)
+    surface.SetMaterial(downgradient)
     surface.SetDrawColor(0, 0, 0, 200 * winnerMP)
     surface.DrawTexturedRect(ScrW() / 2 - phraseX / 2, 0 + (ScrW() * 30 / 1920) + GetConVar("bfthud_yoffset"):GetInt(), phraseX, phraseY * 2)
     draw.SimpleText(phrase, "bfthud_center_blur", ScrW() / 2, 2 + (ScrW() * 30 / 1920) + GetConVar("bfthud_yoffset"):GetInt(), ColorAlpha(hudbgcolor, 200 * winnerMP), TEXT_ALIGN_CENTER)
