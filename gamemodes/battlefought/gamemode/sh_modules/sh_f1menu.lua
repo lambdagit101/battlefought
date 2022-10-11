@@ -16,7 +16,7 @@ if SERVER then
         SetGlobalInt("battle-fought-votes", GetGlobalInt("battle-fought-votes") + (not ply:GetNWBool("battle-fought-voted") and 1 or -1))
         ply:SetNWBool("battle-fought-voted", not ply:GetNWBool("battle-fought-voted"))
 
-        if GetGlobalInt("battle-fought-votes") >= math.ceil(player.GetCount() / 2) then
+        if GetGlobalInt("battle-fought-votes") >= math.ceil((player.GetCount() - #player.GetBots()) / 2) then
             SetGlobalFloat("battle-fought-startingin", CurTime() + 5)
         else
             SetGlobalFloat("battle-fought-startingin", 0)
@@ -72,7 +72,7 @@ if CLIENT then
 
             voteButton.Think = function(self)
                 --self:SetColor(Color((voted and 0 or 255), (voted and 255 or 0), 0))
-                self:SetText(string.format(language.GetPhrase("bftui-help-votebutton"), "(" .. GetGlobalInt("battle-fought-votes") .. "/" .. math.ceil(player.GetCount() / 2) .. ")"))
+                self:SetText(string.format(language.GetPhrase("bftui-help-votebutton"), "(" .. GetGlobalInt("battle-fought-votes") .. "/" .. math.ceil((player.GetCount() - #player.GetBots()) / 2) .. ")"))
             end
 
             voteButton.Paint = function(self, w, h)

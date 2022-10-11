@@ -3,6 +3,10 @@ GM.Author = "lambups & juinc"
 GM.Email = "N/A"
 GM.Website = "N/A"
 
+function player.GetHumanCount()
+    return player.GetCount() - #player.GetBots()
+end
+
 AddCSLuaFile("sh_modules/sh_roundstates.lua")
 AddCSLuaFile("sh_modules/sh_defaulttable.lua")
 AddCSLuaFile("player_class/player_battlefought.lua")

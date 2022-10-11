@@ -290,7 +290,7 @@ function DrawWarmup()
     if GetGlobalFloat("battle-fought-startingin") ~= 0 then
         voterPhrase = string.format(language.GetPhrase("bftui-hud-start"), GetGlobalFloat("battle-fought-startingin") - CurTime())
     else
-        voterPhrase = string.format(language.GetPhrase("bftui-hud-votes"), GetGlobalInt("battle-fought-votes"), math.ceil(player.GetCount() / 2))
+        voterPhrase = string.format(language.GetPhrase("bftui-hud-votes"), GetGlobalInt("battle-fought-votes"), math.ceil((player.GetCount() - #player.GetBots()) / 2))
     end
 
     draw.SimpleText(voterPhrase, "bfthud_name_blur", ScrW() / 2, 2 + (ScrW() * 30 / 1920) + GetConVar("bfthud_yoffset"):GetInt() + texty, ColorAlpha(hudbgcolor, 200 * warmupmp), TEXT_ALIGN_CENTER)

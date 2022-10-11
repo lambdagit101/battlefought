@@ -112,7 +112,7 @@ if SERVER then
     end)
 
     hook.Add("PlayerDisconnected", "battle-fought-disconnect", function(ply)
-        if GetGlobalInt("battle-fought-votes") >= math.ceil((player.GetCount() - 1) / 2) then
+        if GetGlobalInt("battle-fought-votes") >= math.ceil(((player.GetCount() - #player.GetBots()) - 1) / 2) then
             SetGlobalFloat("battle-fought-startingin", CurTime() + 5)
         else
             SetGlobalFloat("battle-fought-startingin", 0)
