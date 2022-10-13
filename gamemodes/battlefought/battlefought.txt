@@ -2,7 +2,8 @@
 {
 	"base"		"base"
 	"title"		"battle_fought_"
-	"category"	"pvp"
+	"category"		"pvp"
+	"maps"		"^bf_"
 	"menusystem"	"1"
 
 	"settings"
