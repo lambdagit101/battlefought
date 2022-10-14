@@ -14,11 +14,37 @@ function SWEP:SecondaryAttack()
     end
 end
 
+function RGBRainbow(frequency)
+    local result = {}
+
+    result.r = math.floor(math.sin(CurTime() * frequency + 0) * 127 + 128)
+    result.g = math.floor(math.sin(CurTime() * frequency + 2) * 127 + 128)
+    result.b = math.floor(math.sin(CurTime() * frequency + 4) * 127 + 128)
+
+    return result
+end
+
+function SWEP:DrawHUD()
+    for _, pos in ipairs(self.BoxTable) do
+        local coords = pos[1]:ToScreen()
+        local rainbow = RGBRainbow(1)
+
+        draw.RoundedBox(8, coords.x - 8, coords.y - 8, 16, 16, Color(rainbow.r, rainbow.g, rainbow.b))
+    end
+end
+
 function SWEP:PrimaryAttack()
-    self.BoxTable[#self.BoxTable + 1] = {
-        self:GetOwner():GetEyeTrace().HitPos,
-        Angle(0, self:GetOwner():EyeAngles().y, 0)
-    }
+    if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
+
+    if (game.SinglePlayer() and CLIENT) or (CLIENT and IsFirstTimePredicted()) then
+        self.BoxTable[#self.BoxTable + 1] = {
+            self:GetOwner():GetEyeTrace().HitPos,
+            Angle(0, self:GetOwner():EyeAngles().y, 0)
+        }
+    end
+    if SERVER then
+        self:GetOwner():ChatPrint("Saved a box at [" .. self:GetOwner():GetEyeTrace().HitPos.x .. " " .. self:GetOwner():GetEyeTrace().HitPos.y .. " " .. self:GetOwner():GetEyeTrace().HitPos.z .. "]")
+    end
 end
 
 function SWEP:Think()
