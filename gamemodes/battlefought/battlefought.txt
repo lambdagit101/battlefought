@@ -5,6 +5,7 @@
 	"category"		"pvp"
 	"maps"		"^bf_"
 	"menusystem"	"1"
+	"workshopid"	"2873403675"
 
 	"settings"
 	{
