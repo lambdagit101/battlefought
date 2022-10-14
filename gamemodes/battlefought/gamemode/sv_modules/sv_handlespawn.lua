@@ -17,12 +17,22 @@ hook.Add("PlayerCanHearPlayersVoice", "battle-fought-voice-chat", function(liste
     if not talker:Alive() and listener:Alive() and GAMEMODE:GetRoundState() == 2 then return false end
 end)
 
+function GM:ReturnSpawnPoint(ply, table, suitable)
+    local tempSpawn = math.random(#table)
+
+    if GAMEMODE:IsSpawnpointSuitable(ply, table[tempSpawn], suitable) then
+        return tempSpawn
+    else
+        return GAMEMODE:ReturnSpawnPoint(ply, table, true)
+    end
+end
+
 hook.Add("PlayerSelectSpawn", "battle-fought-better-spawns", function(ply)
     local spawns = {}
     table.Add(spawns, ents.FindByClass("info_player_start"))
     table.Add(spawns, ents.FindByClass("info_player_deathmatch"))
     table.Add(spawns, ents.FindByClass("info_deathmatch_spawn"))
-    local random_entry = math.random(#spawns)
+    local random_entry = GAMEMODE:ReturnSpawnPoint(ply, spawns, false)
 
     return spawns[random_entry]
 end)

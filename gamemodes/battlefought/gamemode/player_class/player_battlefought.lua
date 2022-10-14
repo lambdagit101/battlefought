@@ -8,6 +8,8 @@ PLAYER.RunSpeed = 345
 PLAYER.CrouchedWalkSpeed = 0.3
 PLAYER.StartArmor = 33
 PLAYER.MaxArmor = 99
+PLAYER.TeammateNoCollide = true
+PLAYER.AvoidPlayers = true
 PLAYER.TauntCam = TauntCamera()
 
 function PLAYER:Loadout()
