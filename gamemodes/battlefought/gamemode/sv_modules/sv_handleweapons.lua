@@ -55,7 +55,7 @@ hook.Add("PlayerCanPickupWeapon", "battle-fought-weapons", function(ply, weapon)
 
     local tr = util.TraceHull({
         start = ply:EyePos(),
-        endpos = ply:EyePos() + ply:GetAimVector() * 82,
+        endpos = ply:EyePos() + ply:GetAimVector() * 142,
         filter = ply,
         mask = MASK_SHOT_HULL,
         mins = Vector(1, 1, 1) * -10,
