@@ -22,8 +22,6 @@ function GM:ReturnSpawnPoint(ply, table, suitable)
 
     if GAMEMODE:IsSpawnpointSuitable(ply, table[tempSpawn], suitable) then
         return tempSpawn
-    else
-        return GAMEMODE:ReturnSpawnPoint(ply, table, true)
     end
 end
 
