@@ -19,6 +19,8 @@ end
 util.AddNetworkString("battle-fought-loadout")
 
 function GM:PlayerLoadout(ply)
+    hook.Run("battle-fought-loadout", ply)
+
     player_manager.RunClass(ply, "Loadout")
 
     if GAMEMODE:GetRoundState() == 0 then
