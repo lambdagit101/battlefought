@@ -127,8 +127,10 @@ hook.Add("StartCommand", "battle-fought-freeze", function(ply, cmd)
     if ply:GetNWBool("battle-fought-freeze") and ply:Alive() then
         cmd:ClearMovement()
         cmd:RemoveKey(IN_ATTACK)
+        cmd:RemoveKey(IN_ATTACK2)
         cmd:RemoveKey(IN_JUMP)
         cmd:RemoveKey(IN_DUCK)
         cmd:RemoveKey(IN_WALK)
+        cmd:RemoveKey(IN_USE)
     end
 end)
