@@ -14,8 +14,6 @@ if SERVER then
 
         game.CleanUpMap(false, {"env_fire", "entityflame", "_firesmoke"})
 
-        SetGlobalString("battle-fought-starterup", BF.StartingWeapons[math.random(#BF.StartingWeapons)])
-
         for _, ply in ipairs(player.GetAll()) do
             ply:SetNWBool("battle-fought-voted", false)
             ply:SetFrags(0)
@@ -26,8 +24,8 @@ if SERVER then
         end
 
         net.Start("battle-fought-loadout")
-        net.WriteString(GetGlobalString("battle-fought-starterup"))
         net.WriteString(BF.Knife)
+        net.WriteString("")
         net.Broadcast()
         net.Start("battle-fought-round-start")
         net.WriteFloat(GetConVar("bftserver_starttime"):GetInt())

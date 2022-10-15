@@ -31,8 +31,6 @@ function GM:PlayerLoadout(ply)
         net.WriteString(secondaryWeapon)
         net.WriteString(BF.Knife)
         net.Send(ply)
-    else
-        ply:Give(GetGlobalString("battle-fought-starterup"), false)
     end
 
     return true
