@@ -30,6 +30,15 @@ hook.Add("PlayerSelectSpawn", "battle-fought-better-spawns", function(ply)
     table.Add(spawns, ents.FindByClass("info_player_start"))
     table.Add(spawns, ents.FindByClass("info_player_deathmatch"))
     table.Add(spawns, ents.FindByClass("info_deathmatch_spawn"))
+
+    if table.IsEmpty(spawns) then
+        table.Add(spawns, ents.FindByClass("info_player_terrorist"))
+        table.Add(spawns, ents.FindByClass("info_player_counterterrorist"))
+        table.Add(spawns, ents.FindByClass("info_player_axis"))
+        table.Add(spawns, ents.FindByClass("info_player_allies"))
+        table.Add(spawns, ents.FindByClass("info_player_rebel"))
+        table.Add(spawns, ents.FindByClass("info_player_combine"))
+    end
     local random_entry = GAMEMODE:ReturnSpawnPoint(ply, spawns, false)
 
     return spawns[random_entry]
