@@ -45,7 +45,8 @@ SWEP.Bullet.Damage = 16
 SWEP.Bullet.Force = 4
 SWEP.Bullet.TracerFrequency = 1
 SWEP.Bullet.Cone = 0.09
-SWEP.Bullet.Sound = Sound("Weapon_Shotgun.Single")
+SWEP.Bullet.Sound = Sound("Weapon_Shotgun.NPC_Single")
+SWEP.Bullet.Pump = true
 
 SWEP.Recoil = {}
 SWEP.Recoil.UpwardsRecoil = 2.375
@@ -60,6 +61,7 @@ SWEP.ADS.Pos = Vector(-9, -2, 3)
 SWEP.ADS.Ang = Angle(1, 0, 0)
 SWEP.ADS.VectorBoost = Vector(0, -3, 0)
 SWEP.ADS.AngleBoost = Angle(6, 0, 0)
+SWEP.ADS.Anim = true
 
 SWEP.Crouch = {}
 SWEP.Crouch.RecoilMP = 0.8156945
@@ -84,6 +86,9 @@ SWEP.Anim.Idle = ACT_VM_IDLE
 SWEP.Anim.ShellReloadStart = ACT_SHOTGUN_RELOAD_START
 SWEP.Anim.ShellReloadInsert = ACT_VM_RELOAD
 SWEP.Anim.ShellReloadFinish = ACT_SHOTGUN_RELOAD_FINISH
+
+SWEP.Pump = {}
+SWEP.Pump.Sound = Sound("Weapon_Shotgun.Special1")
 
 SWEP.Rload = {}
 SWEP.Rload.Shells = true

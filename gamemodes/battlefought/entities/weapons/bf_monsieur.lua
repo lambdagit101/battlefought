@@ -43,7 +43,7 @@ SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 24
 SWEP.Bullet.Force = 13
-SWEP.Bullet.TracerFrequency = 0
+SWEP.Bullet.TracerFrequency = 4
 SWEP.Bullet.Cone = 0.019875
 SWEP.Bullet.Sound = Sound("Weapon_Famas.Single")
 

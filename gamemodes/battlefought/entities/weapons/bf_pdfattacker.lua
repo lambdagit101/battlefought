@@ -44,7 +44,7 @@ SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 35
 SWEP.Bullet.Force = 29
-SWEP.Bullet.TracerFrequency = 1
+SWEP.Bullet.TracerFrequency = 4
 SWEP.Bullet.Cone = 0.0245
 SWEP.Bullet.Sound = Sound("Weapon_Galil.Single")
 

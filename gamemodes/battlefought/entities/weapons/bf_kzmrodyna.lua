@@ -43,7 +43,7 @@ SWEP.Bullet.Amount = 1
 SWEP.Bullet.Pellets = 1
 SWEP.Bullet.Damage = 35
 SWEP.Bullet.Force = 19
-SWEP.Bullet.TracerFrequency = 1
+SWEP.Bullet.TracerFrequency = 4
 SWEP.Bullet.Cone = 0.01785
 SWEP.Bullet.Sound = Sound("Weapon_AK47.Single")
 

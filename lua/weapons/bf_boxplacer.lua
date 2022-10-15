@@ -24,18 +24,28 @@ function RGBRainbow(frequency)
     return result
 end
 
+local rgbcolor = Color(0, 0, 0)
+local devcolor = Color(0, 255, 0)
 function SWEP:DrawHUD()
+    local rainbow = RGBRainbow(1)
+    rgbcolor = Color(rainbow.r, rainbow.g, rainbow.b)
     for _, pos in ipairs(self.BoxTable) do
         local coords = pos[1]:ToScreen()
-        local rainbow = RGBRainbow(1)
+        local enddir = (pos[1] + pos[2]:Forward() * 32):ToScreen()
 
-        draw.RoundedBox(8, coords.x - 8, coords.y - 8, 16, 16, Color(rainbow.r, rainbow.g, rainbow.b))
+        draw.NoTexture()
+        surface.SetDrawColor(devcolor)
+        surface.DrawLine(coords.x, coords.y, enddir.x, enddir.y)
+        draw.RoundedBox(8, coords.x - 9, coords.y - 9, 18, 18, devcolor)
+        draw.RoundedBox(8, coords.x - 8, coords.y - 8, 16, 16, rgbcolor)
+        draw.SimpleText("[" .. pos[1].x .. " " .. pos[1].y .. " " .. pos[1].z .. "]", "HudHintTextLarge", coords.x, coords.y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 end
 
 function SWEP:PrimaryAttack()
     if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
 
+    self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
     if (game.SinglePlayer() and CLIENT) or (CLIENT and IsFirstTimePredicted()) then
         self.BoxTable[#self.BoxTable + 1] = {
             self:GetOwner():GetEyeTrace().HitPos,

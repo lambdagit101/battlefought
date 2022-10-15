@@ -52,6 +52,7 @@ SWEP.Bullet.Force = 14
 SWEP.Bullet.TracerFrequency = 1
 SWEP.Bullet.Cone = 0.015
 SWEP.Bullet.Sound = Sound("Weapon_SMG1.Single")
+SWEP.Bullet.Pump = false
 
 SWEP.Recoil = {}
 SWEP.Recoil.UpwardsRecoil = 1.575
@@ -88,6 +89,10 @@ SWEP.Anim.ReloadEmpty = ACT_VM_RELOAD_EMPTY
 SWEP.Anim.Reload = ACT_VM_RELOAD
 SWEP.Anim.IdleEmpty = ACT_VM_IDLE_EMPTY
 SWEP.Anim.Idle = ACT_VM_IDLE
+SWEP.Anim.Pump = ACT_SHOTGUN_PUMP
+
+SWEP.Pump = {}
+SWEP.Pump.Sound = Sound("Weapon_Shotgun.Special1")
 
 SWEP.Anim.ShellReloadStart = ACT_SHOTGUN_RELOAD_START
 SWEP.Anim.ShellReloadInsert = ACT_VM_RELOAD
@@ -132,6 +137,7 @@ function SWEP:SetupDataTables()
     self:NetworkVar("Float", 0, "ReloadTime")
 	self:NetworkVar("Float", 1, "NextIdle")
     self:NetworkVar("Float", 2, "LastPrimaryFire")
+    self:NetworkVar("Float", 3, "NextPump")
 end
 
 function SWEP:Initialize()
@@ -249,9 +255,12 @@ function SWEP:ReloadThink()
                 self:SetReloading(false)
         
                 self:SendWeaponAnim(self.Anim.ShellReloadFinish)
-                self:QueueIdle()
                 self:SetReloadTime(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
-                self:QueueIdle()
+                if self.Bullet.Pump then
+                    self:SetNextPump(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
+                else
+                    self:QueueIdle()
+                end
             end
         end
     else
@@ -286,11 +295,23 @@ function SWEP:IdleThink()
 		self:SendWeaponAnim(self:Clip1() > 0 and self.Anim.Idle or self.Anim.IdleEmpty)
 	end
 end
+
+function SWEP:PumpThink()
+    if self:GetNextPump() ~= 0 and self:GetNextPump() < CurTime() then
+        self:SetNextPump(0)
+        self:SendWeaponAnim(self.Anim.Pump)
+        if self.Pump.Sound then
+            self:EmitSound(self.Pump.Sound)
+        end
+        self:QueueIdle()
+    end
+end
   
 function SWEP:Think()
     self:ReloadThink()
     self:IronsightsThink()
     self:IdleThink()
+    self:PumpThink()
 end
 
 function SWEP:Holster()
@@ -381,6 +402,9 @@ function SWEP:PrimaryAttack()
     end
 	self:GetOwner():MuzzleFlash()
 	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+    if self.Bullet.Pump then
+        self:SetNextPump(CurTime() + self:GetOwner():GetViewModel():SequenceDuration())
+    end
     self:EmitSound(self.Bullet.Sound)
     self:TakePrimaryAmmo(self.Bullet.Amount)
     self:FireCoolBullet()
@@ -420,9 +444,7 @@ function SWEP:SetDeploySpeed(speed)
 end
 
 function SWEP:GetOffset()
-	if self:GetReloading() then return end
-
-    local velocity = self:GetOwner():GetVelocity():Length()
+	local velocity = self:GetOwner():GetVelocity():Length()
     local baseVector = Vector(0 + (velocity / 1000), 0 - (6 * (velocity / 1000)), 0 - (velocity / 1000))
     local baseAngle = Angle(0, 0, 0)
     local airSpread = 0.1675 * (velocity / 500)
@@ -437,7 +459,7 @@ function SWEP:GetOffset()
     local tr = util.QuickTrace(self:GetOwner():EyePos(), self:GetOwner():EyeAngles():Forward() * 32, self:GetOwner())
 
     if tr.Hit and not tr.HitNonWorld and not tr.HitSky and not tr.AllSolid then
-        baseVector:Add(Vector(0, -19.725 * (1 - tr.Fraction), 0))
+        baseVector:Add(Vector(0, -15.725 * (1 - tr.Fraction), 0))
     end
 
 	if self:IsSprinting() then
