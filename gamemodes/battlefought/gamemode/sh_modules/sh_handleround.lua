@@ -24,8 +24,8 @@ if SERVER then
         end
 
         net.Start("battle-fought-loadout")
-        net.WriteString(BF.Knife)
         net.WriteString("")
+        net.WriteString(BF.Knife)
         net.Broadcast()
         net.Start("battle-fought-round-start")
         net.WriteFloat(GetConVar("bftserver_starttime"):GetInt())
