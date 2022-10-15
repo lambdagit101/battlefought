@@ -463,7 +463,12 @@ function SWEP:GetOffset()
     end
 
 	if self:IsSprinting() then
-        return self.Movement.Pos, self.Movement.Ang
+        if self.Movement.Pos2 and self.Movement.Ang2 then
+            local sine = 0.5 * (1 + math.sin(2 * math.pi * (self:GetOwner():GetRunSpeed() / 200) * CurTime()))
+            return LerpVector(sine, self.Movement.Pos, self.Movement.Pos2), LerpAngle(sine, self.Movement.Ang, self.Movement.Ang2)
+        else
+            return self.Movement.Pos, self.Movement.Ang
+        end
 	end
 
 	if self:GetAimingDownSights() then
