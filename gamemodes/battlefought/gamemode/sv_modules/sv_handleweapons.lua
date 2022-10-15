@@ -24,15 +24,12 @@ function GM:PlayerLoadout(ply)
     player_manager.RunClass(ply, "Loadout")
 
     if GAMEMODE:GetRoundState() == 0 then
-        local _, primaryWeapon = table.Random(BF.Primaries)
         local _, secondaryWeapon = table.Random(BF.Secondaries)
-        ply:Give(primaryWeapon, false)
-        ply:GiveAmmo(ply:GetWeapon(primaryWeapon):Clip1() * 2, ply:GetWeapon(primaryWeapon):GetPrimaryAmmoType(), true)
         ply:Give(secondaryWeapon, false)
         ply:GiveAmmo(ply:GetWeapon(secondaryWeapon):Clip1() * 2, ply:GetWeapon(secondaryWeapon):GetPrimaryAmmoType(), true)
         net.Start("battle-fought-loadout")
-        net.WriteString(primaryWeapon)
         net.WriteString(secondaryWeapon)
+        net.WriteString(BF.Knife)
         net.Send(ply)
     else
         ply:Give(GetGlobalString("battle-fought-starterup"), false)
