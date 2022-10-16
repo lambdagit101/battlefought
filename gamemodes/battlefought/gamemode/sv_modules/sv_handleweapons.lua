@@ -36,6 +36,7 @@ function GM:PlayerLoadout(ply)
         net.Send(ply)
     else
         ply:Give(GetGlobalString("battle-fought-starterup"), false)
+        ply:GiveAmmo(ply:GetWeapon(GetGlobalString("battle-fought-starterup")):Clip1(), ply:GetWeapon(GetGlobalString("battle-fought-starterup")):GetPrimaryAmmoType(), true)
     end
 
     return true
