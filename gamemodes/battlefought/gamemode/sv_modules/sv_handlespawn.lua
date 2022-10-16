@@ -88,6 +88,7 @@ hook.Add("KeyPress", "battle-fought-death-spectate", function(ply, key)
         end
 
         ply:SpectateEntity(player.GetAll()[ply.SpectatedPlayer])
+        ply:SetupHands()
     end
 
     if key == IN_ATTACK2 then
@@ -98,10 +99,11 @@ hook.Add("KeyPress", "battle-fought-death-spectate", function(ply, key)
         end
 
         ply:SpectateEntity(player.GetAll()[ply.SpectatedPlayer])
+        ply:SetupHands()
     end
 
     if key == IN_JUMP then
-        ply.SpectateMode = false
+        ply.SpectateMode = not ply.SpectateMode
         ply:Spectate(ply.SpectateMode and OBS_MODE_IN_EYE or OBS_MODE_CHASE)
     end
 end)
