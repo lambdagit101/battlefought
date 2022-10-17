@@ -92,7 +92,7 @@ SWEP.Rload.Shells = false
 SWEP.Rload.ShellInserted = 1
 
 SWEP.Crosshair = {}
-SWEP.Crosshair.Enabled = false
+SWEP.Crosshair.Enabled = true
 SWEP.Crosshair.TShape = true
 SWEP.Crosshair.HideADS = true
 SWEP.Crosshair.CenterDot = false

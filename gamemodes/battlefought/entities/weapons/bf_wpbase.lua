@@ -9,6 +9,8 @@ SWEP.ViewModel = "models/weapons/v_smg1.mdl"
 SWEP.WorldModel = "models/weapons/w_smg1.mdl"
 SWEP.ViewModelFOV = 60
 
+SWEP.AccurateCrosshair = true
+
 SWEP.BobScale = 0.1
 SWEP.SwayScale = 0.1
 
