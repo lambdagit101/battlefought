@@ -24,8 +24,8 @@ function GM:PlayerLoadout(ply)
     player_manager.RunClass(ply, "Loadout")
 
     if GAMEMODE:GetRoundState() == 0 then
-        local _, primaryWeapon = table.Random(BF.Primaries)
-        local _, secondaryWeapon = table.Random(BF.Secondaries)
+        local primaryWeapon = table.Random(BF.QuickiePrimaries)
+        local secondaryWeapon = table.Random(BF.QuickieSecondaries)
         ply:Give(primaryWeapon, false)
         ply:GiveAmmo(ply:GetWeapon(primaryWeapon):Clip1() * 2, ply:GetWeapon(primaryWeapon):GetPrimaryAmmoType(), true)
         ply:Give(secondaryWeapon, false)
