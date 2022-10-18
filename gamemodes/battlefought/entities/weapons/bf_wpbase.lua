@@ -229,6 +229,7 @@ function SWEP:Reload()
         end
     else
         if self:Clip1() ~= self:GetMaxClip1() and self:Ammo1() ~= 0 and not self:GetReloading() then
+            self:SetHoldType(self.HoldType)
             self:GetOwner():DoReloadEvent()
             self:SendWeaponAnim(self:Clip1() == 0 and self.Anim.ReloadEmpty or self.Anim.Reload)
             self:QueueIdle()
@@ -279,7 +280,7 @@ end
 
 function SWEP:IronsightsThink()
     self:SetAimingDownSights(self:GetOwner():KeyDown(IN_ATTACK2) and not self:GetReloading() and not self:IsSprinting())
-    self:SetHoldType((self:GetAimingDownSights() and self.AimHoldType or self.HoldType))
+    self:SetHoldType((self:GetAimingDownSights() and not self:GetReloading() and self.AimHoldType or self.HoldType))
     if self:GetOwner():KeyPressed(IN_ATTACK2) and not self:GetReloading() and not self:IsSprinting() and self.ADS.Sound then
         self:EmitSound(self.ADS.Sound)
     end
