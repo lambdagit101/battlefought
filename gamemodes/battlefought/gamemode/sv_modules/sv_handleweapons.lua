@@ -18,14 +18,17 @@ end
 
 util.AddNetworkString("battle-fought-loadout")
 
+local QuickiePrimaries = table.GetKeys(BF.Primaries)
+local QuickieSecondaries = table.GetKeys(BF.Secondaries)
+
 function GM:PlayerLoadout(ply)
     hook.Run("battle-fought-loadout", ply)
 
     player_manager.RunClass(ply, "Loadout")
 
     if GAMEMODE:GetRoundState() == 0 then
-        local primaryWeapon = table.Random(BF.QuickiePrimaries)
-        local secondaryWeapon = table.Random(BF.QuickieSecondaries)
+        local primaryWeapon = table.Random(QuickiePrimaries)
+        local secondaryWeapon = table.Random(QuickieSecondaries)
         ply:Give(primaryWeapon, false)
         ply:GiveAmmo(ply:GetWeapon(primaryWeapon):Clip1() * 2, ply:GetWeapon(primaryWeapon):GetPrimaryAmmoType(), true)
         ply:Give(secondaryWeapon, false)

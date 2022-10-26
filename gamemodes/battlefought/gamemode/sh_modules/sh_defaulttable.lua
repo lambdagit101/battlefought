@@ -106,9 +106,6 @@ if table.IsEmpty(BF) then
     BF = GM:GenerateDefaultBFTable()
 end
 
-BF.QuickiePrimaries = table.GetKeys(primaries)
-BF.QuickieSecondaries = table.GetKeys(primaries)
-
 function GM:ReturnBFTable()
     return BF
 end
