@@ -66,10 +66,8 @@ SWEP.Crouch.Cone = 0.03301357835
 SWEP.Movement = {}
 SWEP.Movement.RecoilMP = 1.618575
 SWEP.Movement.Cone = 0.038
-SWEP.Movement.Pos = Vector(2.523, 1.057, -3.757)
-SWEP.Movement.Ang = Angle(-3.116, 29.691, -17.487)
-SWEP.Movement.Pos2 = Vector(1.74, -0.105, -5.007)
-SWEP.Movement.Ang2 = Angle(-3.116, 32.015, -17.487)
+SWEP.Movement.Pos = Vector(0, 0, 0)
+SWEP.Movement.Ang = Angle(-5.523, 7.218, -2.52)
 
 SWEP.Anim = {}
 SWEP.Anim.EquipEmpty = ACT_VM_DRAW
