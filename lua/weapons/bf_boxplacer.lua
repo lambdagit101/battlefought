@@ -46,7 +46,7 @@ function SWEP:PrimaryAttack()
     if game.SinglePlayer() then self:CallOnClient("PrimaryAttack") end
 
     self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-    if (game.SinglePlayer() and CLIENT) or (CLIENT and IsFirstTimePredicted()) then
+    if (game.SinglePlayer() and CLIENT) or (CLIENT and IsFirstTimePredicted()) or SERVER then
         self.BoxTable[#self.BoxTable + 1] = {
             self:GetOwner():GetEyeTrace().HitPos,
             Angle(0, self:GetOwner():EyeAngles().y, 0)
