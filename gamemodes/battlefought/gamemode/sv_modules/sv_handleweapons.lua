@@ -22,7 +22,8 @@ local QuickiePrimaries = table.GetKeys(BF.Primaries)
 local QuickieSecondaries = table.GetKeys(BF.Secondaries)
 
 function GM:PlayerLoadout(ply)
-    hook.Run("battle-fought-loadout", ply)
+    local loadhook = hook.Run("battle-fought-loadout", ply)
+    if loadhook ~= nil and loadhook == false then return true end
 
     player_manager.RunClass(ply, "Loadout")
 
